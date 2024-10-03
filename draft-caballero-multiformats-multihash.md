@@ -54,19 +54,21 @@ author:
       email: bumblefudge@ipfs.tech
     uri: https://ipfs.tech/
 normative:
+  RFC6234:
   RFC6920:
+  RFC7693:
   RFC9652:
-  FIPS202: 
+  FIPS202:
     target: http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf
     title: SHA-3 Standard, Permutation-Based Hash and Extendable-Output Functions
-    date: 2015-08
+    date: 2015-08-01
 informative:
   RFC6256: SDNV
   RFC8126:
   DWARF: 
     target: http://dwarfstd.org/doc/Dwarf3.pdf
     title: DWARF Debugging Information Format
-    date: 2005-12
+    date: 2005-12-01
 ---
 
 --- abstract
@@ -121,7 +123,7 @@ data format.
 
 A data type that enables one to express an unsigned integer of variable length.
 The format uses the Unsigned Little Endian Base 128 (ULEB128) encoding that was
-canonically defined in Appendix C of the {{?DWARF}} Debugging Information Format
+canonically defined in Appendix C of the DWARF Debugging Information Format
 standard, initially released in 1993, and further specified in 2011 by IRTF
 {{?RFC6256}} as Self-Delimiting Numeric Values or SDNVs.
 
@@ -189,7 +191,7 @@ In IETF's corpus of normative protocols, there are three partial overlaps of
 problem space worth familiarizing oneself with to minimize collisions and
 confusions:
 
-* "Named Information Hash", specified in {{?RFC6920}}, defines an hierarchical
+* "Named Information Hash", specified in {{!RFC6920}}, defines an hierarchical
   URI scheme for content-identifiers, partitioned by enumerated hash functions.
   The [NIH registry][] at IANA contains all of these.
 * UUIDv5, aka "Namespaced UUIDs", defined in {{?RFC9562}}
@@ -209,7 +211,7 @@ confusions:
 
 The "Named Information Hash" URI scheme allows for minimally self-describing
 hash strings to serve as content-identifiers for arbitrary binary inputs. This
-lightweight identifier scheme is defined in {{?RFC6920}} and the supported
+lightweight identifier scheme is defined in {{!RFC6920}} and the supported
 hash-context prefixes live in an IANA registry named
 ["https://www.iana.org/assignments/named-information/named-information.xhtml#hash-alg"](https://www.iana.org/assignments/named-information/named-information.xhtml#hash-alg).
 Its syntactic similarity to HTTP headers and [support for MIME
@@ -288,29 +290,30 @@ TODO - format [current Contributing.md document language](https://github.com/mul
 The Multihash Identifier Registry contains hash functions supported by Multihash
 each with its canonical name, its value in hexadecimal notation, and its status.
 The following initial entries should be added to the registry to be created and
-maintained at (the suggested URI)
+maintained at (the suggested URI):
 
-* http://www.iana.org/assignments/multihash-identifiers
+http://www.iana.org/assignments/multihash-identifiers
 
 |Name|Identifier|Status|Specification|
 |---|---|---|---|
 |identity|0x00|active|n/a|
 |sha1|0x11|active|{{?RFC6234}}|
-|sha2-256|0x12|active|{{?RFC6234}}|
-|sha2-512|0x13|active|{{?RFC6234}}|
-|sha3-512|0x14|active|{{?FIPS202}}|
-|sha3-384|0x15|active|{{?FIPS202}}|
-|sha3-256|0x16|active|{{?FIPS202}}|
-|sha3-224|0x17|active|{{?FIPS202}}|
-|sha3-384|0x20|active|{{?FIPS202}}|
-|sha2-256-trunc264-padded|0x1012|active|{{?RFC6234}}|
-|sha2-224|0x1013|active|{{?RFC6234}}|
-|sha2-512-224|0x1014|active|{{?RFC6234}}|
-|sha2-512-256|0x1015|active|{{?RFC6234}}|
-|blake2b-256|0xb220|active|{{?RFC7693}}|
+|sha2-256|0x12|active|{{!RFC6234}}|
+|sha2-512|0x13|active|{{!RFC6234}}|
+|sha3-512|0x14|active|{{!FIPS202}}|
+|sha3-384|0x15|active|{{!FIPS202}}|
+|sha3-256|0x16|active|{{!FIPS202}}|
+|sha3-224|0x17|active|{{!FIPS202}}|
+|sha3-384|0x20|active|{{!FIPS202}}|
+|sha2-256-trunc264-padded|0x1012|active|{{!RFC6234}}|
+|sha2-224|0x1013|active|{{!RFC6234}}|
+|sha2-512-224|0x1014|active|{{!RFC6234}}|
+|sha2-512-256|0x1015|active|{{!RFC6234}}|
+|blake2b-256|0xb220|active|{{!RFC7693}}|
 
 # Acknowledgments
 
 {:numbered="false"}
 
-Thanks to Carsten Borman, Aaron Goldman, and others for their substantial contributions to this document on the multiformats mailing list.
+Thanks to Carsten Borman, Aaron Goldman, and others for their substantial
+contributions to this document on the multiformats mailing list.
