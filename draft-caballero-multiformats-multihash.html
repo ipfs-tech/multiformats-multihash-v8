@@ -1,0 +1,1822 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>The Multihash Data Format</title>
+<meta content="Juan Benet" name="author">
+<meta content="Manu Sporny" name="author">
+<meta content="Juan Caballero" name="author">
+<meta content="
+       Cryptographic hash functions often generate multiple output sizes and encodings.
+This variability makes it difficult for applications to examine a series of
+bytes and determine which hash function produced them, and thus such context is
+traditionally passed alongside the resulting bytes in defined protocols.
+Multihash inlines this context information so that it can travel and be
+translated more easily, decoupled from specific protocols. 
+    " name="description">
+<meta content="xml2rfc 3.23.2" name="generator">
+<meta content="namespace governance" name="keyword">
+<meta content="identifiers" name="keyword">
+<meta content="sparkling distributed ledger" name="keyword">
+<meta content="draft-caballero-multiformats-multihash-latest" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.23.2
+    Python 3.12.6
+    ConfigArgParse 1.7
+    google-i18n-address 3.1.1
+    intervaltree 3.1.0
+    Jinja2 3.1.4
+    lxml 4.9.4
+    platformdirs 4.3.6
+    pycountry 22.3.5
+    PyYAML 6.0.1
+    requests 2.32.3
+    setuptools 70.3.0
+    wcwidth 0.2.13
+-->
+<link href="draft-caballero-multiformats-multihash.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Lora SemiBold'), local('Lora-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Cabin Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Cabin Condensed SemiBold'), local('CabinCondensed-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/cabincondensed-semibold-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Cabin Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Cabin Condensed SemiBold'), local('CabinCondensed-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/cabincondensed-semibold-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Cabin Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Cabin Condensed SemiBold'), local('CabinCondensed-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/cabincondensed-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: light dark;
+  --background-color: #fff;
+  --text-color: #222;
+  --title-color: #191919;
+  --link-color: #2a6496;
+  --highlight-color: #f9f9f9;
+  --line-color: #eee;
+  --pilcrow-weak: #ddd;
+  --pilcrow-strong: #bbb;
+  --small-font-size: 14.5px;
+  --font-mono: 'Oxygen Mono', monospace;
+  scrollbar-color: #bbb #eee;
+}
+body {
+  max-width: 600px;
+  margin: 75px auto;
+  padding: 0 5px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font: 16px/22px "Lora", serif;
+  scroll-behavior: smooth;
+}
+
+.ears {
+  display: none;
+}
+
+/* headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Cabin Condensed", sans-serif;
+  font-weight: 600;
+  margin: 0.8em 0 0.3em;
+  font-size-adjust: 0.5;
+  color: var(--title-color);
+}
+h1#title {
+  font-size: 32px;
+  line-height: 40px;
+  clear: both;
+}
+h1#title, h1#rfcnum {
+  margin: 1.5em 0 0.2em;
+}
+h1#rfcnum + h1#title {
+  margin: 0.2em 0;
+}
+
+h1, h2, h3 {
+  font-size: 22px;
+  line-height: 27px;
+}
+h4, h5, h6 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+/* general structure */
+.author {
+  padding-bottom: 0.3em;
+}
+#abstract+p {
+  font-size: 18px;
+  line-height: 24px;
+}
+#abstract+p code, #abstract+p samp, #abstract+p tt {
+  font-size: 16px;
+  line-height: 0;
+}
+
+p {
+  padding: 0;
+  margin: 0.5em 0;
+  text-align: left;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+/* font-family isn't space-separated, but =~ will have to do */
+svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
+  font-family: var(--font-mono);
+}
+.alignCenter.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  border: none;
+  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+     support flexbox yet.
+  */
+  display: table;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 0.5em 2em;
+}
+:is(ol, ul) :is(ol, ul) {
+  margin-left: 1em;
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+.ulCompact li {
+  margin: 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+}
+ul.empty li, .ulEmpty li {
+  margin-top: 0.5em;
+}
+:is(ul, ol).compact, .ulCompact, .olCompact {
+  line-height: 1;
+  margin: 0 0 0 2em;
+}
+
+/* definition lists */
+dl {
+  clear: left;
+  --indent: 3ch;
+  /* --indent: attr(indent ch); not supported in any browser, but we can dream */
+}
+dl.olPercent {
+  --indent: 5ch;
+}
+dl > dt {
+  float: left;
+  margin-right: 2ch;
+  min-width: 8ch;
+}
+dl.dlNewline > dt {
+  float: none;
+}
+dl > dd {
+  margin-bottom: .8em;
+  margin-left: var(--indent) !important; /* stupid element overrides */
+  min-height: 2ex;
+}
+dl.olPercent > dt {
+  min-width: calc(var(--indent) - 2ch);
+}
+:is(dl.compact, .dlCompact) > dd {
+  margin-bottom: 0;
+}
+:is(dl.compact, .dlCompact) > dd > :is(:first-child, .break:first-child + *) {
+  margin-top: 0;
+}
+:is(dl.compact, .dlCompact) > dd > :is(:last-child) {
+  margin-bottom: 0;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+}
+:is(dd, span).break {
+  display: none;
+}
+
+/* links */
+a, a[href].selfRef:hover {
+  text-decoration: none;
+}
+a[href] {
+  color: var(--link-color);
+}
+a[href].selfRef, .iref + a[href].internal {
+  color: var(--text-color);
+}
+a[href]:hover {
+  text-decoration: underline;
+}
+a[href].selfRef:hover {
+  background-color: var(--highlight-color);
+}
+a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
+  white-space: nowrap;
+}
+
+/* Figures */
+tt, code, pre {
+  background-color: var(--highlight-color);
+  font: 14px/22px var(--font-mono);
+}
+tt, code {
+  /* changing the font for inline elements leads to different ascender
+     and descender heights; as we want to retain baseline alignment,
+     remove leading to avoid altering the final height of lines
+     note: this fails if these blocks take an entire line,
+     a different solution would be great */
+  line-height: 0;
+}
+:is(h1, h2, h3, h4, h5, h6) :is(tt, code) {
+  font-size: 84%;
+}
+pre {
+  border: 1px solid var(--line-color);
+  font-size: 13.5px;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  margin: 5px;
+  padding: 5px;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0.5em 0;
+  padding: 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption, caption {
+  font-style: italic;
+  margin: 0.5em 1.5em;
+  text-align: left;
+}
+@media screen {
+  /* Auto-collapse boilerplate. */
+  :is(#status-of-memo, #copyright) p {
+    margin: -2px 0;
+    max-height: 0;
+    transition: max-height 2s ease, margin 0.5s ease 0.5s;
+    overflow: hidden;
+  }
+  :is(#status-of-memo, #copyright):hover p,
+  :is(#status-of-memo, #copyright) h2:target ~ p {
+    margin: 0.5em 0;
+    max-height: 500px;
+    overflow: auto;
+  }
+  pre, svg {
+    display: inline-block;
+    overflow-x: auto;
+  }
+  pre {
+    max-width: 100%;
+    width: calc(100% - 22px - 1em);
+  }
+  svg {
+    max-width: calc(100% - 22px - 1em);
+  }
+  figure pre {
+    display: block;
+    width: calc(100% - 25px);
+  }
+  :is(pre, svg) + .pilcrow {
+    display: inline-block;
+    vertical-align: text-bottom;
+    padding-bottom: 8px;
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 0 2em;
+  font-style: italic;
+}
+blockquote {
+  margin: 1em 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* tables */
+table {
+  max-width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+}
+table.right {
+  margin-left: auto;
+}
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+table.left {
+  margin-right: auto;
+}
+thead, tbody {
+  border: 1px solid var(--line-color);
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px 10px;
+}
+th {
+  background-color: var(--line-color);
+}
+:is(tr:nth-child(2n), thead+tbody > tr:nth-child(2n+1)) > td {
+  background-color: var(--background-color);
+}
+:is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
+  background-color: var(--highlight-color);
+}
+table caption {
+  margin: 0;
+  padding: 3px 0 3px 1em;
+}
+table p {
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  margin-left: 3px;
+  opacity: 0.2;
+  user-select: none;
+}
+a.pilcrow[href] { color: var(--pilcrow-weak); }
+a.pilcrow[href]:hover { text-decoration: none; }
+@media not print {
+  :hover > a.pilcrow {
+    opacity: 1;
+  }
+  a.pilcrow[href]:hover {
+    color: var(--pilcrow-strong);
+    background-color: transparent;
+  }
+}
+@media print {
+  a.pilcrow {
+    display: none;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-color);
+}
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: 600;
+  font-size: var(--small-font-size);
+}
+.role {
+  font-variant: all-small-caps;
+}
+sub, sup {
+  line-height: 1;
+  font-size: 80%;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: var(--small-font-size);
+  line-height: 18px;
+  --identifier-width: 15ch;
+}
+#identifiers dt {
+  width: var(--identifier-width);
+  min-width: var(--identifier-width);
+  clear: left;
+  float: left;
+  text-align: right;
+  margin-right: 1ch;
+}
+#identifiers dd {
+  margin: 0;
+  margin-left: calc(1em + var(--identifier-width)) !important;
+  min-width: 5em;
+}
+#identifiers .authors .author {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+#identifiers .authors .org {
+  font-style: italic;
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #999;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: left;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+}
+#toc nav ul {
+  margin: 0 0.5em 0 0;
+  padding: 0;
+  list-style: none;
+}
+#toc nav li {
+  line-height: 1.3em;
+  margin: 2px 0;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
+#toc a.xref {
+  white-space: normal;
+}
+/* references */
+.references dt {
+  text-align: right;
+  font-weight: bold;
+  min-width: 10ch;
+  margin-right: 1.5ch;
+}
+.references dt:target::before {
+  content: "⇒";
+  width: 15px;
+  margin: 0 10px 0 -25px;
+}
+.references dd {
+  margin-left: 12ch !important;
+  overflow: auto;
+}
+
+.refInstance {
+  margin-bottom: 1.25em;
+}
+
+.references .ascii {
+  margin-bottom: 0.25em;
+}
+
+/* index */
+#rfc\.index\.index + ul {
+  margin-left: 0;
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  margin: 1em 0;
+}
+address.vcard .nameRole {
+  font-weight: 700;
+  margin-left: 0;
+}
+address.vcard .label {
+  margin: 0.5em 0;
+}
+address.vcard .type {
+  display: none;
+}
+.alternative-contact {
+  margin: 1.5em 0 1em;
+}
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+@media (min-width: 500px) {
+  #authors-addresses > section {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  #authors-addresses > section > h2 {
+    column-span: all;
+  }
+  /* hack for break-inside: avoid-column */
+  #authors-addresses address {
+    display: inline-block;
+    break-inside: avoid-column;
+  }
+}
+
+.rfcEditorRemove p:first-of-type {
+  font-style: italic;
+}
+.cref {
+  background-color: rgba(249, 232, 105, 0.3);
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+/* alternative layout for smaller screens */
+@media screen and (max-width: 929px) {
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 1px 0 0 0;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    opacity: 0.6;
+  }
+  #toc.active {
+      opacity: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 2px 0 2px 6px;
+    padding-right: 1em;
+    font-size: 18px;
+    line-height: 24px;
+    min-width: 190px;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+  }
+  #toc h2::before { /* css hamburger */
+    float: right;
+    position: relative;
+    width: 1em;
+    height: 1px;
+    left: -164px;
+    margin: 8px 0 0 0;
+    background: white none repeat scroll 0 0;
+    box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+    content: "";
+  }
+  #toc nav {
+    display: none;
+    background-color: var(--background-color);
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+  #toc.active nav {
+    display: block;
+  }
+  /* Make the collapsed ToC header render white on gray also when it's a link */
+  #toc h2 a,
+  #toc h2 a:link,
+  #toc h2 a:focus,
+  #toc h2 a:hover,
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+  #toc a.toplink {
+    margin-top: 2px;
+  }
+}
+
+/* alternative layout for wide screens */
+@media screen and (min-width: 930px) {
+  body {
+    padding-right: 360px;
+    padding-right: calc(min(180px + 20%, 500px));
+  }
+  #toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 480px);
+    width: 312px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 2em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  #toc nav > ul  {
+    margin-bottom: 2em;
+  }
+  #toc ul {
+    margin: 0 0 0 4px;
+    font-size: var(--small-font-size);
+  }
+  #toc ul :is(p, li) {
+    margin: 2px 0;
+    line-height: 22px;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre, .vcard {
+    page-break-inside: avoid;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  :is(h2, h3, h4, h5, h6)+*, dd {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+  .toplink {
+    display: none;
+  }
+}
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+}
+
+/* Changes introduced to fix issues found during implementation */
+
+/* Separate body from document info even without intervening H1 */
+section {
+  clear: both;
+}
+
+/* Top align author divs, to avoid names without organization dropping level with org names */
+.author {
+  vertical-align: top;
+}
+
+/* Style section numbers with more space between number and title */
+.section-number {
+  padding-right: 0.5em;
+}
+
+/* Add styling for a link in the ToC that points to the top of the document */
+a.toplink {
+  float: right;
+  margin: 8px 0.5em 0;
+}
+
+/* Provide styling for table cell text alignment */
+table .text-left {
+  text-align: left;
+}
+table .text-center {
+  text-align: center;
+}
+table .text-right {
+  text-align: right;
+}
+
+/* Make the alternative author contact information look less like just another
+   author, and group it closer with the primary author contact information */
+.alternative-contact {
+  margin: 0.5em 0 0.25em 0;
+}
+address .non-ascii {
+  margin: 0 0 0 2em;
+}
+
+/* With it being possible to set tables with alignment
+  left, center, and right, { width: 100%; } does not make sense */
+table {
+  width: auto;
+}
+
+/* Avoid reference text that sits in a block with very wide left margin,
+   because of a long floating dt label.*/
+.references dd {
+  overflow: visible;
+}
+
+/* Control caption placement */
+caption {
+  caption-side: bottom;
+}
+
+/* Limit the width of the author address vcard, so names in right-to-left
+   script don't end up on the other side of the page. */
+
+address.vcard {
+  max-width: 20em;
+  margin-right: auto;
+}
+
+/* For address alignment dependent on LTR or RTL scripts */
+address div.left {
+  text-align: left;
+}
+address div.right {
+  text-align: right;
+}
+
+/* Dark mode. */
+@media (prefers-color-scheme: dark) {
+:root {
+  --background-color: #121212;
+  --text-color: #f0f0f0;
+  --title-color: #fff;
+  --link-color: #4da4f0;
+  --highlight-color: #282828;
+  --line-color: #444;
+  --pilcrow-weak: #444;
+  --pilcrow-strong: #666;
+  scrollbar-color: #777 #333;
+}
+}
+
+/* SVG Trick: a prefix match works because only black and white are allowed */
+svg :is([stroke="black"], [stroke^="#000"]) {
+  stroke: var(--text-color);
+}
+svg :is([stroke="white"], [stroke^="#fff"]) {
+  stroke: var(--background-color);
+}
+svg :is([fill="black"], [fill^="#000"], :not([fill])) {
+  fill: var(--text-color);
+}
+svg :is([fill="white"], [fill^="#fff"]) {
+  fill: var(--background-color);
+}
+</style>
+
+</head>
+<body class="xml2rfc">
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">Multihash</td>
+<td class="right">October 2024</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Benet, et al.</td>
+<td class="center">Expires 6 April 2025</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">Network Working Group</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-caballero-multiformats-multihash-latest</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2024-10-03" class="published">3 October 2024</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Standards Track</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2025-04-06">6 April 2025</time></dd>
+<dt class="label-authors">Authors:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">J. Benet</div>
+<div class="org">Protocol Labs</div>
+</div>
+<div class="author">
+      <div class="author-name">M. Sporny</div>
+<div class="org">Digital Bazaar</div>
+</div>
+<div class="author">
+      <div class="author-name">J. Caballero</div>
+<div class="org">Interplanetary File System Foundation</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">The Multihash Data Format</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">Cryptographic hash functions often generate multiple output sizes and encodings.
+This variability makes it difficult for applications to examine a series of
+bytes and determine which hash function produced them, and thus such context is
+traditionally passed alongside the resulting bytes in defined protocols.
+Multihash inlines this context information so that it can travel and be
+translated more easily, decoupled from specific protocols.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+</section>
+<section class="note rfcEditorRemove" id="section-note.1">
+      <h2 id="name-about-this-document">
+<a href="#name-about-this-document" class="section-name selfRef">About This Document</a>
+      </h2>
+<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">
+        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-caballero-multiformats-multihash/">https://datatracker.ietf.org/doc/draft-caballero-multiformats-multihash/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+<p id="section-note.1-3">Source for this draft and an issue tracker can be found at
+        <span><a href="https://github.com/ipfs-tech/multiformats-multihash-v8">https://github.com/ipfs-tech/multiformats-multihash-v8</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 6 April 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2024 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Revised BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Revised BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-feedback" class="internal xref">Feedback</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-the-multihash-fields" class="internal xref">The Multihash Fields</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-multihash-core-data-types" class="internal xref">Multihash Core Data Types</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.1">
+                    <p id="section-toc.1-1.4.2.1.2.1.1"><a href="#section-4.1.1" class="auto internal xref">4.1.1</a>.  <a href="#name-unsigned-variable-integer" class="internal xref">Unsigned Variable Integer</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-multihash-fields" class="internal xref">Multihash Fields</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.1">
+                    <p id="section-toc.1-1.4.2.2.2.1.1"><a href="#section-4.2.1" class="auto internal xref">4.2.1</a>.  <a href="#name-hash-function-identifier" class="internal xref">Hash Function Identifier</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.2">
+                    <p id="section-toc.1-1.4.2.2.2.2.1"><a href="#section-4.2.2" class="auto internal xref">4.2.2</a>.  <a href="#name-digest-length" class="internal xref">Digest Length</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.3">
+                    <p id="section-toc.1-1.4.2.2.2.3.1"><a href="#section-4.2.3" class="auto internal xref">4.2.3</a>.  <a href="#name-digest-value" class="internal xref">Digest Value</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-a-multihash-example" class="internal xref">A Multihash Example</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-prior-art-and-translation" class="internal xref">Prior Art And Translation</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-named-information-hash" class="internal xref">Named Information Hash</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.1">
+                    <p id="section-toc.1-1.5.2.1.2.1.1"><a href="#section-5.1.1" class="auto internal xref">5.1.1</a>.  <a href="#name-translation-from-multihash-" class="internal xref">Translation from multihash to named-information hash</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-using-multihashes-as-namesp" class="internal xref">Using Multihashes as Namespaced UUIDs</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
+                <p id="section-toc.1-1.8.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-initial-values-for-the-mult" class="internal xref">Initial Values for the Multihash Identifier Registry</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="feedback">
+<section id="section-1">
+      <h2 id="name-feedback">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-feedback" class="section-name selfRef">Feedback</a>
+      </h2>
+<p id="section-1-1">This specification is a joint work product of <a href="https://ipfs.tech/">The IPFS
+Foundation</a> and the <a href="https://w3c-ccg.github.io/">W3C Credentials Community
+Group</a>. Feedback related to this specification
+should logged in the <a href="https://github.com/ipfs-tech/multiformats-multihash-v8/issues">issue tracker</a>
+and/or be sent to <a href="mailto:multiformats@ietfa.amsl.com">Multiformats Mailing List at the
+IETF</a>.<a href="#section-1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="introduction">
+<section id="section-2">
+      <h2 id="name-introduction">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-2-1">Multihash responds to evolving design patterns in systems which depend on
+cryptographically-secure hash functions, contributing to cryptographic agility
+and allowing for easier translation (e.g. across multiple wire formats) within a
+given system, and for ambient verifiability throughout a system, not just in the
+context of protocols. To facilitate self-describing hashes rather than
+context-bound ones, multihash inlines an identifier representing the hash
+function used (and its configuration or auxiliary inputs) as a prefix before the
+hash function output. This allows for cryptographic agility and provides a
+valuable building block to content-addressing systems and URI-safety mechanisms
+alike.<a href="#section-2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="conventions-and-definitions">
+<section id="section-3">
+      <h2 id="name-conventions-and-definitions">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-conventions-and-definitions" class="section-name selfRef">Conventions and Definitions</a>
+      </h2>
+<p id="section-3-1">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
+"<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
+described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
+appear in all capitals, as shown here.<a href="#section-3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="the-multihash-fields">
+<section id="section-4">
+      <h2 id="name-the-multihash-fields">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-the-multihash-fields" class="section-name selfRef">The Multihash Fields</a>
+      </h2>
+<p id="section-4-1">A multihash follows the TLV (type-length-value) pattern and consists of several
+fields composed of a combination of unsigned variable length integers and byte
+information.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<div id="multihash-core-data-types">
+<section id="section-4.1">
+        <h3 id="name-multihash-core-data-types">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-multihash-core-data-types" class="section-name selfRef">Multihash Core Data Types</a>
+        </h3>
+<p id="section-4.1-1">The following section details the core data types used by the Multihash
+data format.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<div id="unsigned-variable-integer">
+<section id="section-4.1.1">
+          <h4 id="name-unsigned-variable-integer">
+<a href="#section-4.1.1" class="section-number selfRef">4.1.1. </a><a href="#name-unsigned-variable-integer" class="section-name selfRef">Unsigned Variable Integer</a>
+          </h4>
+<p id="section-4.1.1-1">A data type that enables one to express an unsigned integer of variable length.
+The format uses the Unsigned Little Endian Base 128 (ULEB128) encoding that was
+canonically defined in Appendix C of the DWARF Debugging Information Format
+standard, initially released in 1993, and further specified in 2011 by IRTF
+<span>[<a href="#RFC6256" class="cite xref">RFC6256</a>]</span> as Self-Delimiting Numeric Values or SDNVs.<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1.1-2">As suggested by the name, this variable length encoding is only capable of
+representing unsigned integers.  Further, while there is no theoretical maximum
+integer value that can be represented by the format, implementations <span class="bcp14">MUST NOT</span>
+encode more than nine (9) bytes giving a practical limit of integers in a range
+between 0 and 2^63 - 1. When encoding an unsigned variable integer, the unsigned
+integer is serialized seven bits at a time, starting with the least significant
+bits. The most significant bit in each output byte indicates if there is a
+continuation byte. It is not possible to express a signed integer with this data
+type.<a href="#section-4.1.1-2" class="pilcrow">¶</a></p>
+<table class="center" id="table-1">
+            <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Value</th>
+                <th class="text-left" rowspan="1" colspan="1">Encoding (bits)</th>
+                <th class="text-left" rowspan="1" colspan="1">hexadecimal notation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">1</td>
+                <td class="text-left" rowspan="1" colspan="1">00000001</td>
+                <td class="text-left" rowspan="1" colspan="1">0x01</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">127</td>
+                <td class="text-left" rowspan="1" colspan="1">01111111</td>
+                <td class="text-left" rowspan="1" colspan="1">0x7F</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">128</td>
+                <td class="text-left" rowspan="1" colspan="1">10000000 00000001</td>
+                <td class="text-left" rowspan="1" colspan="1">0x8001</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">255</td>
+                <td class="text-left" rowspan="1" colspan="1">11111111 00000001</td>
+                <td class="text-left" rowspan="1" colspan="1">0xFF01</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">300</td>
+                <td class="text-left" rowspan="1" colspan="1">10101100 00000010</td>
+                <td class="text-left" rowspan="1" colspan="1">0xAC02</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">16384</td>
+                <td class="text-left" rowspan="1" colspan="1">10000000 10000000 00000001</td>
+                <td class="text-left" rowspan="1" colspan="1">0x808001</td>
+              </tr>
+            </tbody>
+          </table>
+<p id="section-4.1.1-4">Implementations <span class="bcp14">MUST</span> restrict the size of the varint to a max of nine bytes (63
+bits). In order to avoid memory attacks on the encoding, the aforementioned
+practical maximum length of nine bytes is used. There is no theoretical limit,
+and future specs can grow this number if it is truly necessary to have code or
+length values larger than 2^31.<a href="#section-4.1.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="multihash-fields">
+<section id="section-4.2">
+        <h3 id="name-multihash-fields">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-multihash-fields" class="section-name selfRef">Multihash Fields</a>
+        </h3>
+<p id="section-4.2-1">A multihash follows the TLV (type-length-value) pattern.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<div id="hash-function-identifier">
+<section id="section-4.2.1">
+          <h4 id="name-hash-function-identifier">
+<a href="#section-4.2.1" class="section-number selfRef">4.2.1. </a><a href="#name-hash-function-identifier" class="section-name selfRef">Hash Function Identifier</a>
+          </h4>
+<p id="section-4.2.1-1">The hash function identifier is an unsigned variable integer identifying the
+hash function. Possible values for this field are provided in The Multihash
+Identifier Registry (see IANA considerations below).<a href="#section-4.2.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="digest-length">
+<section id="section-4.2.2">
+          <h4 id="name-digest-length">
+<a href="#section-4.2.2" class="section-number selfRef">4.2.2. </a><a href="#name-digest-length" class="section-name selfRef">Digest Length</a>
+          </h4>
+<p id="section-4.2.2-1">The digest length is an unsigned variable integer counting the length of the
+digest in bytes.<a href="#section-4.2.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="digest-value">
+<section id="section-4.2.3">
+          <h4 id="name-digest-value">
+<a href="#section-4.2.3" class="section-number selfRef">4.2.3. </a><a href="#name-digest-value" class="section-name selfRef">Digest Value</a>
+          </h4>
+<p id="section-4.2.3-1">The digest value is the hash function digest with a length of exactly what is
+specified in the digest length, which is specified in bytes.<a href="#section-4.2.3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="a-multihash-example">
+<section id="section-4.3">
+        <h3 id="name-a-multihash-example">
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-a-multihash-example" class="section-name selfRef">A Multihash Example</a>
+        </h3>
+<p id="section-4.3-1">For example, the following is an expression of a SHA2-256 hash in hexadecimal
+notation (spaces added for readability purposes):<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<div class="lang-bash sourcecode" id="section-4.3-2">
+<pre>
+0x12 20 41dd7b6443542e75701aa98a0c235951a28a0d851b11564d20022ab11d2589a8
+</pre><a href="#section-4.3-2" class="pilcrow">¶</a>
+</div>
+<p id="section-4.3-3">The first byte (0x12) specifies the SHA2-256 hash function. The second byte
+(0x20) specifies the length of the hash, which is 32 bytes. The rest of the data
+specifies the value of the output of the hash function.<a href="#section-4.3-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="prior-art-and-translation">
+<section id="section-5">
+      <h2 id="name-prior-art-and-translation">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-prior-art-and-translation" class="section-name selfRef">Prior Art And Translation</a>
+      </h2>
+<p id="section-5-1">In IETF's corpus of normative protocols, there are three partial overlaps of
+problem space worth familiarizing oneself with to minimize collisions and
+confusions:<a href="#section-5-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5-2.1">
+          <p id="section-5-2.1.1">"Named Information Hash", specified in <span>[<a href="#RFC6920" class="cite xref">RFC6920</a>]</span>, defines an hierarchical
+URI scheme for content-identifiers, partitioned by enumerated hash functions.
+The <a href="https://www.iana.org/assignments/named-information/named-information.xhtml#hash-alg">NIH registry</a> at IANA contains all of these.<a href="#section-5-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-5-2.2">
+          <p id="section-5-2.2.1">UUIDv5, aka "Namespaced UUIDs", defined in <span>[<a href="#RFC9562" class="cite xref">RFC9562</a>]</span>
+            <a href="https://datatracker.ietf.org/doc/html/rfc9562#uuidv5">section 5.5</a>, does the
+inverse, defining a universal namespace for one hash function, partitioned by
+the application of that function to multiple URI schemes (i.e. DNS names,
+valid URLs, etc.)<a href="#section-5-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-5-2.3">
+          <p id="section-5-2.3.1">The IANA <a href="https://www.iana.org/assignments/named-information/named-information.xhtml#hash-alg">NIH registry</a> has a similar shape and governance mode to the IANA
+<a href="https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-18">hashAlgorithm registry</a> that TLS 1.2 implementations use to compactly
+signal supported hash+signature combinations. Since the former has different
+entries for some hash functions based on output length and the latter does
+not, the two registries are not alignable. However, given their different
+contexts, collisions between the two would not be a practical concern for
+users of either.<a href="#section-5-2.3.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<div id="named-information-hash">
+<section id="section-5.1">
+        <h3 id="name-named-information-hash">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-named-information-hash" class="section-name selfRef">Named Information Hash</a>
+        </h3>
+<p id="section-5.1-1">The "Named Information Hash" URI scheme allows for minimally self-describing
+hash strings to serve as content-identifiers for arbitrary binary inputs. This
+lightweight identifier scheme is defined in <span>[<a href="#RFC6920" class="cite xref">RFC6920</a>]</span> and the supported
+hash-context prefixes live in an IANA registry named
+<a href="https://www.iana.org/assignments/named-information/named-information.xhtml#hash-alg">"https://www.iana.org/assignments/named-information/named-information.xhtml#hash-alg"</a>.
+Its syntactic similarity to HTTP headers and <a href="https://datatracker.ietf.org/doc/html/rfc6920#section-3.1">support for MIME
+content-types</a> makes
+it potentially useful for web use-cases, but use-cases are not constrained by
+URI scheme, only hinted at by the specification in sections 3 through 7.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<div id="translation-from-multihash-to-named-information-hash">
+<section id="section-5.1.1">
+          <h4 id="name-translation-from-multihash-">
+<a href="#section-5.1.1" class="section-number selfRef">5.1.1. </a><a href="#name-translation-from-multihash-" class="section-name selfRef">Translation from multihash to named-information hash</a>
+          </h4>
+<p id="section-5.1.1-1">Some hash functions and output lengths specified in the Multihash registry below
+correspond to the few entries in the smaller Named Information Hash registry,
+leading to simple round-trip translations for multihashes produced by these
+dual-registered hash functions.<a href="#section-5.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-2">Formatting a multihash with <em>any other</em> multihash prefix as a Named Information
+Hash (only useful, of course, for consumers supporting both formats) is
+facilitated by a generic cross-registry tag for self-describing multihashes,
+first proposed to the <a href="https://www.iana.org/assignments/named-information/named-information.xhtml#hash-alg">NIH registry</a> by <a href="https://www.ietf.org/archive/id/draft-multiformats-multihash-03.html#appendix-D.2">Appendix
+B</a>
+in the 2021 internet-draft (v3) of this same document.<a href="#section-5.1.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-3">The translation is achieved thusly:<a href="#section-5.1.1-3" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-5.1.1-4">
+<li id="section-5.1.1-4.1">
+              <p id="section-5.1.1-4.1.1">Strip the prefix bytes from the hash value and use the prefix bytes to identity the hash function used from the registry below.<a href="#section-5.1.1-4.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li id="section-5.1.1-4.2">
+              <p id="section-5.1.1-4.2.1">If the multihash prefix corresponds to any tags in the <a href="https://www.iana.org/assignments/named-information/named-information.xhtml#hash-alg">NIH registry</a>:<a href="#section-5.1.1-4.2.1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-5.1.1-4.2.2">
+<li id="section-5.1.1-4.2.2.1">
+                  <p id="section-5.1.1-4.2.2.1.1">translate multicodec tag to NIH tag, i.e., if <code>0x12</code> (<code>sha2-256</code>) in
+<code>multicodec</code> registry, then <code>0x01</code> (<code>sha256</code>) in <code>named-information</code>
+registry<a href="#section-5.1.1-4.2.2.1.1" class="pilcrow">¶</a></p>
+</li>
+                <li id="section-5.1.1-4.2.2.2">
+                  <p id="section-5.1.1-4.2.2.2.1">transcode the hash value from "unsigned varint" to standard MSB binary<a href="#section-5.1.1-4.2.2.2.1" class="pilcrow">¶</a></p>
+</li>
+                <li id="section-5.1.1-4.2.2.3">
+                  <p id="section-5.1.1-4.2.2.3.1">(for binary form:) reattach new prefix to transcoded hash value<a href="#section-5.1.1-4.2.2.3.1" class="pilcrow">¶</a></p>
+</li>
+                <li id="section-5.1.1-4.2.2.4">
+                  <p id="section-5.1.1-4.2.2.4.1">(for ASCII form:) convert prefix to URL format, i.e., <code>ni:///sha-256;</code> for
+<code>0x01</code>, and reattach to base64-encoded transcoded hash value<a href="#section-5.1.1-4.2.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              </ol>
+</li>
+            <li id="section-5.1.1-4.3">
+              <p id="section-5.1.1-4.3.1">If multihash prefix does NOT map cleanly to a registered value in <a href="https://www.iana.org/assignments/named-information/named-information.xhtml#hash-alg">NIH registry</a>:<a href="#section-5.1.1-4.3.1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-5.1.1-4.3.2">
+<li id="section-5.1.1-4.3.2.1">
+                  <p id="section-5.1.1-4.3.2.1.1">(for binary form:) prefix existing binary multihash with <code>0x42</code> to
+designate that what follows is a multicodec prefix followed by an ULEB128
+hash value.<a href="#section-5.1.1-4.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+                <li id="section-5.1.1-4.3.2.2">
+                  <p id="section-5.1.1-4.3.2.2.1">(for ASCII form:) convert the <code>0x42</code> prefix to URL format, i.e.,
+<code>ni:///mh;</code> and then append a base64url, no-padding encoding of the entire
+binary multihash with prefix (and <em>without</em> adding the additional
+base-64-url-no-padding prefix, <code>u</code>, if using a <a href="https://github.com/multiformats/multibase">multibase</a> library for
+this base-encoding).<a href="#section-5.1.1-4.3.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              </ol>
+</li>
+          </ol>
+</section>
+</div>
+</section>
+</div>
+<div id="using-multihashes-as-namespaced-uuids">
+<section id="section-5.2">
+        <h3 id="name-using-multihashes-as-namesp">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-using-multihashes-as-namesp" class="section-name selfRef">Using Multihashes as Namespaced UUIDs</a>
+        </h3>
+<p id="section-5.2-1">Since the "Named Information Hash" URI scheme conforms to URL syntax (with or
+without an authority), each valid Named Information Hash URI can be assumed to
+be unique within the namespace of all valid URLs. As such, any <code>ni://</code> URL (with
+or without an authority) can be hashed and used as a
+<a href="https://datatracker.ietf.org/doc/html/rfc9562#uuidv5">UUIDv5</a> in the URL
+namespace, i.e. <code>6ba7b811-9dad-11d1-80b4-00c04fd430c8</code> (See <a href="https://datatracker.ietf.org/doc/html/rfc9562#namespaces">section
+6.6</a>).<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-2">Since this approach relies on SHA-1, and discards all but the most significant
+128 bits of the hash output, its security may not be adequate for all
+applications, as noted in the specification. Alternative ways of using a bounded
+namespace could include a novel namespace registration for UUIDv5, or a UUIDv8
+approach, to content-address arbitrary information with namespaced UUID
+variants.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="sec-combined-references">
+<section id="section-6">
+      <h2 id="name-references">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-references" class="section-name selfRef">References</a>
+      </h2>
+<div id="sec-normative-references">
+<section id="section-6.1">
+        <h3 id="name-normative-references">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
+<dl class="references">
+<dt id="RFC6234">[RFC6234]</dt>
+        <dd>
+<span class="refAuthor">Eastlake 3rd, D.</span> and <span class="refAuthor">T. Hansen</span>, <span class="refTitle">"US Secure Hash Algorithms (SHA and SHA-based HMAC and HKDF)"</span>, <span class="seriesInfo">RFC 6234</span>, <span class="seriesInfo">DOI 10.17487/RFC6234</span>, <time datetime="2011-05" class="refDate">May 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6234">https://www.rfc-editor.org/rfc/rfc6234</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6920">[RFC6920]</dt>
+        <dd>
+<span class="refAuthor">Farrell, S.</span>, <span class="refAuthor">Kutscher, D.</span>, <span class="refAuthor">Dannewitz, C.</span>, <span class="refAuthor">Ohlman, B.</span>, <span class="refAuthor">Keranen, A.</span>, and <span class="refAuthor">P. Hallam-Baker</span>, <span class="refTitle">"Naming Things with Hashes"</span>, <span class="seriesInfo">RFC 6920</span>, <span class="seriesInfo">DOI 10.17487/RFC6920</span>, <time datetime="2013-04" class="refDate">April 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6920">https://www.rfc-editor.org/rfc/rfc6920</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7693">[RFC7693]</dt>
+        <dd>
+<span class="refAuthor">Saarinen, M., Ed.</span> and <span class="refAuthor">J. Aumasson</span>, <span class="refTitle">"The BLAKE2 Cryptographic Hash and Message Authentication Code (MAC)"</span>, <span class="seriesInfo">RFC 7693</span>, <span class="seriesInfo">DOI 10.17487/RFC7693</span>, <time datetime="2015-11" class="refDate">November 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7693">https://www.rfc-editor.org/rfc/rfc7693</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9562">[RFC9562]</dt>
+        <dd>
+<span class="refAuthor">Davis, K.</span>, <span class="refAuthor">Peabody, B.</span>, and <span class="refAuthor">P. Leach</span>, <span class="refTitle">"Universally Unique IDentifiers (UUIDs)"</span>, <span class="seriesInfo">RFC 9562</span>, <span class="seriesInfo">DOI 10.17487/RFC9562</span>, <time datetime="2024-05" class="refDate">May 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9562">https://www.rfc-editor.org/rfc/rfc9562</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="FIPS202">[FIPS202]</dt>
+        <dd>
+<span class="refTitle">"SHA-3 Standard, Permutation-Based Hash and Extendable-Output Functions"</span>, <time datetime="2015-08-01" class="refDate">1 August 2015</time>, <span>&lt;<a href="http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf">http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2119">[RFC2119]</dt>
+        <dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8174">[RFC8174]</dt>
+      <dd>
+<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="sec-informative-references">
+<section id="section-6.2">
+        <h3 id="name-informative-references">
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="RFC6256">[RFC6256]</dt>
+        <dd>
+<span class="refAuthor">Eddy, W.</span> and <span class="refAuthor">E. Davies</span>, <span class="refTitle">"Using Self-Delimiting Numeric Values in Protocols"</span>, <span class="seriesInfo">RFC 6256</span>, <span class="seriesInfo">DOI 10.17487/RFC6256</span>, <time datetime="2011-05" class="refDate">May 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6256">https://www.rfc-editor.org/rfc/rfc6256</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8126">[RFC8126]</dt>
+        <dd>
+<span class="refAuthor">Cotton, M.</span>, <span class="refAuthor">Leiba, B.</span>, and <span class="refAuthor">T. Narten</span>, <span class="refTitle">"Guidelines for Writing an IANA Considerations Section in RFCs"</span>, <span class="seriesInfo">BCP 26</span>, <span class="seriesInfo">RFC 8126</span>, <span class="seriesInfo">DOI 10.17487/RFC8126</span>, <time datetime="2017-06" class="refDate">June 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8126">https://www.rfc-editor.org/rfc/rfc8126</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="DWARF">[DWARF]</dt>
+      <dd>
+<span class="refTitle">"DWARF Debugging Information Format"</span>, <time datetime="2005-12-01" class="refDate">1 December 2005</time>, <span>&lt;<a href="http://dwarfstd.org/doc/Dwarf3.pdf">http://dwarfstd.org/doc/Dwarf3.pdf</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+</section>
+</div>
+<div id="security-considerations">
+<section id="appendix-A">
+      <h2 id="name-security-considerations">
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="appendix-A-1">TODO Security<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="iana-considerations">
+<section id="appendix-B">
+      <h2 id="name-iana-considerations">
+<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="appendix-B-1">TODO - format <a href="https://github.com/multiformats/multiformats/blob/master/contributing.md#multiformats-registries">current Contributing.md document language</a> to align better with <span>[<a href="#RFC8126" class="cite xref">RFC8126</a>]</span><a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<div id="initial-values-for-the-multihash-identifier-registry">
+<section id="appendix-B.1">
+        <h3 id="name-initial-values-for-the-mult">
+<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-initial-values-for-the-mult" class="section-name selfRef">Initial Values for the Multihash Identifier Registry</a>
+        </h3>
+<p id="appendix-B.1-1">The Multihash Identifier Registry contains hash functions supported by Multihash
+each with its canonical name, its value in hexadecimal notation, and its status.
+The following initial entries should be added to the registry to be created and
+maintained at (the suggested URI):<a href="#appendix-B.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-B.1-2">http://www.iana.org/assignments/multihash-identifiers<a href="#appendix-B.1-2" class="pilcrow">¶</a></p>
+<table class="center" id="table-2">
+          <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Name</th>
+              <th class="text-left" rowspan="1" colspan="1">Identifier</th>
+              <th class="text-left" rowspan="1" colspan="1">Status</th>
+              <th class="text-left" rowspan="1" colspan="1">Specification</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">identity</td>
+              <td class="text-left" rowspan="1" colspan="1">0x00</td>
+              <td class="text-left" rowspan="1" colspan="1">active</td>
+              <td class="text-left" rowspan="1" colspan="1">n/a</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">sha1</td>
+              <td class="text-left" rowspan="1" colspan="1">0x11</td>
+              <td class="text-left" rowspan="1" colspan="1">active</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#RFC6234" class="cite xref">RFC6234</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">sha2-256</td>
+              <td class="text-left" rowspan="1" colspan="1">0x12</td>
+              <td class="text-left" rowspan="1" colspan="1">active</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#FIPS202" class="cite xref">FIPS202</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">sha2-512</td>
+              <td class="text-left" rowspan="1" colspan="1">0x13</td>
+              <td class="text-left" rowspan="1" colspan="1">active</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#FIPS202" class="cite xref">FIPS202</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">sha3-512</td>
+              <td class="text-left" rowspan="1" colspan="1">0x14</td>
+              <td class="text-left" rowspan="1" colspan="1">active</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#FIPS202" class="cite xref">FIPS202</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">sha3-384</td>
+              <td class="text-left" rowspan="1" colspan="1">0x15</td>
+              <td class="text-left" rowspan="1" colspan="1">active</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#FIPS202" class="cite xref">FIPS202</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">sha3-256</td>
+              <td class="text-left" rowspan="1" colspan="1">0x16</td>
+              <td class="text-left" rowspan="1" colspan="1">active</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#FIPS202" class="cite xref">FIPS202</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">sha3-224</td>
+              <td class="text-left" rowspan="1" colspan="1">0x17</td>
+              <td class="text-left" rowspan="1" colspan="1">active</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#FIPS202" class="cite xref">FIPS202</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">sha3-384</td>
+              <td class="text-left" rowspan="1" colspan="1">0x20</td>
+              <td class="text-left" rowspan="1" colspan="1">active</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#FIPS202" class="cite xref">FIPS202</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">sha2-256-trunc264-padded</td>
+              <td class="text-left" rowspan="1" colspan="1">0x1012</td>
+              <td class="text-left" rowspan="1" colspan="1">active</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#RFC6234" class="cite xref">RFC6234</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">sha2-224</td>
+              <td class="text-left" rowspan="1" colspan="1">0x1013</td>
+              <td class="text-left" rowspan="1" colspan="1">active</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#RFC6234" class="cite xref">RFC6234</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">sha2-512-224</td>
+              <td class="text-left" rowspan="1" colspan="1">0x1014</td>
+              <td class="text-left" rowspan="1" colspan="1">active</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#RFC6234" class="cite xref">RFC6234</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">sha2-512-256</td>
+              <td class="text-left" rowspan="1" colspan="1">0x1015</td>
+              <td class="text-left" rowspan="1" colspan="1">active</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#RFC6234" class="cite xref">RFC6234</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">blake2b-256</td>
+              <td class="text-left" rowspan="1" colspan="1">0xb220</td>
+              <td class="text-left" rowspan="1" colspan="1">active</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#RFC7693" class="cite xref">RFC7693</a>]</span>
+</td>
+            </tr>
+          </tbody>
+        </table>
+</section>
+</div>
+</section>
+</div>
+<div id="acknowledgments">
+<section id="appendix-C">
+      <h2 id="name-acknowledgments">
+<a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
+      </h2>
+<p id="appendix-C-1">Thanks to Carsten Borman, Aaron Goldman, and others for their substantial
+contributions to this document on the multiformats mailing list.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-D">
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Juan Benet</span></div>
+<div dir="auto" class="left"><span class="org">Protocol Labs</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:juan@protocol.ai" class="email">juan@protocol.ai</a>
+</div>
+<div class="url">
+<span>URI:</span>
+<a href="http://juan.benet.ai/" class="url">http://juan.benet.ai/</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Manu Sporny</span></div>
+<div dir="auto" class="left"><span class="org">Digital Bazaar</span></div>
+<div class="tel">
+<span>Phone:</span>
+<a href="tel:+1%20540%20961%204469" class="tel">+1 540 961 4469</a>
+</div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:msporny@digitalbazaar.com" class="email">msporny@digitalbazaar.com</a>
+</div>
+<div class="url">
+<span>URI:</span>
+<a href="http://manu.sporny.org/" class="url">http://manu.sporny.org/</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Juan Caballero</span></div>
+<div dir="auto" class="left"><span class="org">Interplanetary File System Foundation</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:bumblefudge@ipfs.tech" class="email">bumblefudge@ipfs.tech</a>
+</div>
+<div class="url">
+<span>URI:</span>
+<a href="https://ipfs.tech/" class="url">https://ipfs.tech/</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>
