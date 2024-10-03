@@ -85,9 +85,9 @@ translated more easily, decoupled from specific protocols.
 This specification is a joint work product of [The IPFS
 Foundation](https://ipfs.tech/) and the [W3C Credentials Community
 Group](https://w3c-ccg.github.io/). Feedback related to this specification
-should logged in the <eref
-target="https://github.com/ipfs-tech/multihash/issues">issue tracker</eref> and/or be
-sent to [Multiformats Mailing List at the IETF](mailto:multiformats@ietfa.amsl.com).
+should logged in the [issue tracker](https://github.com/ipfs-tech/multiformats-multihash-v8/issues)
+and/or be sent to [Multiformats Mailing List at the
+IETF](mailto:multiformats@ietfa.amsl.com).
 
 # Introduction
 
@@ -121,10 +121,9 @@ data format.
 
 A data type that enables one to express an unsigned integer of variable length.
 The format uses the Unsigned Little Endian Base 128 (ULEB128) encoding that was
-canonically defined in Appendix C of the <xref target="DWARF">DWARF Debugging
-Information Format</xref> standard, initially released in 1993, and further
-specified in 2011 by IRTF {{?RFC6256}} as Self-Delimiting Numeric Values or
-SDNVs.
+canonically defined in Appendix C of the {{?DWARF}} Debugging Information Format
+standard, initially released in 1993, and further specified in 2011 by IRTF
+{{?RFC6256}} as Self-Delimiting Numeric Values or SDNVs.
 
 As suggested by the name, this variable length encoding is only capable of
 representing unsigned integers.  Further, while there is no theoretical maximum
@@ -193,7 +192,7 @@ confusions:
 * "Named Information Hash", specified in {{?RFC6920}}, defines an hierarchical
   URI scheme for content-identifiers, partitioned by enumerated hash functions.
   The [NIH registry][] at IANA contains all of these.
-* UUIDv5, aka "Namespaced UUIDs", defined in {{?RFC9562}} 
+* UUIDv5, aka "Namespaced UUIDs", defined in {{?RFC9562}}
   [section 5.5](https://datatracker.ietf.org/doc/html/rfc9562#uuidv5), does the
   inverse, defining a universal namespace for one hash function, partitioned by
   the application of that function to multiple URI schemes (i.e. DNS names,
@@ -311,6 +310,7 @@ maintained at (the suggested URI)
 |blake2b-256|0xb220|active|{{?RFC7693}}|
 
 # Acknowledgments
+
 {:numbered="false"}
 
 Thanks to Carsten Borman, Aaron Goldman, and others for their substantial contributions to this document on the multiformats mailing list.
