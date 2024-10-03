@@ -54,7 +54,7 @@ author:
       email: bumblefudge@ipfs.tech
     uri: https://ipfs.tech/
 normative:
-  RFC6920: NIH
+  RFC6920:
   RFC9652:
   FIPS202: 
     target: http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf
@@ -210,7 +210,7 @@ confusions:
 
 The "Named Information Hash" URI scheme allows for minimally self-describing
 hash strings to serve as content-identifiers for arbitrary binary inputs. This
-lightweight identifier scheme is defined in {{?RFC-6920}} and the supported
+lightweight identifier scheme is defined in {{?RFC6920}} and the supported
 hash-context prefixes live in an IANA registry named
 ["https://www.iana.org/assignments/named-information/named-information.xhtml#hash-alg"](https://www.iana.org/assignments/named-information/named-information.xhtml#hash-alg).
 Its syntactic similarity to HTTP headers and [support for MIME
