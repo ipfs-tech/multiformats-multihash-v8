@@ -56,11 +56,17 @@ author:
 normative:
   RFC6920: NIH
   RFC9652:
-  FIPS202: http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf
+  FIPS202: 
+    target: http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf
+    title: SHA-3 Standard, Permutation-Based Hash and Extendable-Output Functions
+    date: 2015-08
 informative:
   RFC6256: SDNV
   RFC8126:
-  DWARF: http://dwarfstd.org/doc/Dwarf3.pdf
+  DWARF: 
+    target: http://dwarfstd.org/doc/Dwarf3.pdf
+    title: DWARF Debugging Information Format
+    date: 2005-12
 ---
 
 --- abstract
