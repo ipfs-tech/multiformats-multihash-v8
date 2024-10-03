@@ -3,7 +3,7 @@ title: "The Multihash Data Format"
 abbrev: "Multihash"
 category: Standard
 
-docname: draft-multiformats-multihash-latest
+docname: draft-caballero-multiformats-multihash
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
 number:
 date:
