@@ -1,64 +1,45 @@
 ---
 title: "The Multihash Data Format"
 abbrev: "Multihash"
-category: Standard
-
 docname: draft-caballero-multiformats-multihash-latest
+date:
+category: standard
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
 number:
 date:
 consensus: true
 v: 3
 area: ART
-workgroup: Multiformats WG (proposed)
+workgroup: Multiformats (proposed)
 keyword:
  - namespace governance
  - identifiers
  - sparkling distributed ledger
 pi: [toc, tocindent, sort refs, symrefs, strict, compact, inline]
 venue:
-  group: Multiformats WG (proposed)
   type: Working Group
   github: ipfs-tech/multiformats-multihash-v8
 author:
   - fullname: Juan Benet
     organization: Protocol Labs
-    address: 
-      postal:
-        street: 548 Market Street #51207
-        city: San Francisco, CA
-        code: 94104
-        country: United States of America
-      phone: +1 619 957 7606
-      email: juan@protocol.ai
-      uri: http://juan.benet.ai/
+    email: juan@protocol.ai
+    uri: http://juan.benet.ai/
   - fullname: Manu Sporny
     organization: Digital Bazaar
-    address:
-      postal:
-        street: 203 Roanoke Street W.
-        city: Blacksburg, VA
-        code: 24060
-        country: United States of America
-      phone: +1 540 961 4469
-      email: msporny@digitalbazaar.com
-      uri: http://manu.sporny.org/
+    phone: +1 540 961 4469
+    email: msporny@digitalbazaar.com
+    uri: http://manu.sporny.org/
   - fullname: Juan Caballero
     organization: Interplanetary File System Foundation
-    address:
-      postal:
-        street: 427 N Tatnall St #51207
-        city: Wilmington, DE
-        code: 19801
-        country: United States of America
-      email: bumblefudge@ipfs.tech
+    email: bumblefudge@ipfs.tech
     uri: https://ipfs.tech/
 normative:
   RFC6234:
   RFC6920:
   RFC7693:
   RFC9652:
-  FIPS202:
+  SHA-3:
+    -: FIPS202
     target: http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf
     title: SHA-3 Standard, Permutation-Based Hash and Extendable-Output Functions
     date: 2015-08-01
@@ -298,13 +279,13 @@ http://www.iana.org/assignments/multihash-identifiers
 |---|---|---|---|
 |identity|0x00|active|n/a|
 |sha1|0x11|active|{{?RFC6234}}|
-|sha2-256|0x12|active|{{!RFC6234}}|
-|sha2-512|0x13|active|{{!RFC6234}}|
-|sha3-512|0x14|active|{{!FIPS202}}|
-|sha3-384|0x15|active|{{!FIPS202}}|
-|sha3-256|0x16|active|{{!FIPS202}}|
-|sha3-224|0x17|active|{{!FIPS202}}|
-|sha3-384|0x20|active|{{!FIPS202}}|
+|sha2-256|0x12|active| [FIP202](http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf) |
+|sha2-512|0x13|active| [FIP202](http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf) |
+|sha3-512|0x14|active| [FIP202](http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf) |
+|sha3-384|0x15|active| [FIP202](http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf) |
+|sha3-256|0x16|active| [FIP202](http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf) |
+|sha3-224|0x17|active| [FIP202](http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf) |
+|sha3-384|0x20|active| [FIP202](http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf) |
 |sha2-256-trunc264-padded|0x1012|active|{{!RFC6234}}|
 |sha2-224|0x1013|active|{{!RFC6234}}|
 |sha2-512-224|0x1014|active|{{!RFC6234}}|
@@ -312,7 +293,6 @@ http://www.iana.org/assignments/multihash-identifiers
 |blake2b-256|0xb220|active|{{!RFC7693}}|
 
 # Acknowledgments
-
 {:numbered="false"}
 
 Thanks to Carsten Borman, Aaron Goldman, and others for their substantial
