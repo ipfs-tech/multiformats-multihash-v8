@@ -37,18 +37,17 @@ normative:
   RFC6234:
   RFC6920:
   RFC7693:
-  RFC9652:
-  SHA-3:
-    -: FIPS202
-    target: http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf
+  RFC9562:
+  FIPS202:
     title: SHA-3 Standard, Permutation-Based Hash and Extendable-Output Functions
+    target: http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf
     date: 2015-08-01
 informative:
   RFC6256: SDNV
   RFC8126:
   DWARF: 
-    target: http://dwarfstd.org/doc/Dwarf3.pdf
     title: DWARF Debugging Information Format
+    target: http://dwarfstd.org/doc/Dwarf3.pdf
     date: 2005-12-01
 ---
 
@@ -175,7 +174,7 @@ confusions:
 * "Named Information Hash", specified in {{!RFC6920}}, defines an hierarchical
   URI scheme for content-identifiers, partitioned by enumerated hash functions.
   The [NIH registry][] at IANA contains all of these.
-* UUIDv5, aka "Namespaced UUIDs", defined in {{?RFC9562}}
+* UUIDv5, aka "Namespaced UUIDs", defined in {{!RFC9562}}
   [section 5.5](https://datatracker.ietf.org/doc/html/rfc9562#uuidv5), does the
   inverse, defining a universal namespace for one hash function, partitioned by
   the application of that function to multiple URI schemes (i.e. DNS names,
@@ -279,13 +278,13 @@ http://www.iana.org/assignments/multihash-identifiers
 |---|---|---|---|
 |identity|0x00|active|n/a|
 |sha1|0x11|active|{{?RFC6234}}|
-|sha2-256|0x12|active| [FIP202](http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf) |
-|sha2-512|0x13|active| [FIP202](http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf) |
-|sha3-512|0x14|active| [FIP202](http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf) |
-|sha3-384|0x15|active| [FIP202](http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf) |
-|sha3-256|0x16|active| [FIP202](http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf) |
-|sha3-224|0x17|active| [FIP202](http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf) |
-|sha3-384|0x20|active| [FIP202](http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf) |
+|sha2-256|0x12|active| [FIPS202] |
+|sha2-512|0x13|active| [FIPS202] |
+|sha3-512|0x14|active| [FIPS202] |
+|sha3-384|0x15|active| [FIPS202] |
+|sha3-256|0x16|active| [FIPS202] |
+|sha3-224|0x17|active| [FIPS202] |
+|sha3-384|0x20|active| [FIPS202] |
 |sha2-256-trunc264-padded|0x1012|active|{{!RFC6234}}|
 |sha2-224|0x1013|active|{{!RFC6234}}|
 |sha2-512-224|0x1014|active|{{!RFC6234}}|
