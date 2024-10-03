@@ -6,6 +6,8 @@ on:
 
 jobs:
   setup:
+    permissions:
+      contents: write
     name: "Setup Repository"
     runs-on: ubuntu-latest
     steps:
@@ -94,8 +96,6 @@ jobs:
         make: gh-pages
 
     - name: "Push Changes"
-      permissions:
-        contents: write
       if: ${{ steps.pre.outputs.skip != 'true' }}
       run: |
         git push
