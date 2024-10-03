@@ -55,9 +55,12 @@ author:
     uri: https://ipfs.tech/
 normative:
   RFC6920: NIH
+  RFC9652:
+  FIPS202: http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf
 informative:
   RFC6256: SDNV
   RFC8126:
+  DWARF: http://dwarfstd.org/doc/Dwarf3.pdf
 ---
 
 --- abstract
@@ -184,8 +187,8 @@ confusions:
 * "Named Information Hash", specified in {{?RFC6920}}, defines an hierarchical
   URI scheme for content-identifiers, partitioned by enumerated hash functions.
   The [NIH registry][] at IANA contains all of these.
-* UUIDv5, aka "Namespaced UUIDs", defined in
-  [RFC-9562](https://datatracker.ietf.org/doc/html/rfc9562#uuidv5), does the
+* UUIDv5, aka "Namespaced UUIDs", defined in {{?RFC9562}} 
+  [section 5.5](https://datatracker.ietf.org/doc/html/rfc9562#uuidv5), does the
   inverse, defining a universal namespace for one hash function, partitioned by
   the application of that function to multiple URI schemes (i.e. DNS names,
   valid URLs, etc.)
@@ -201,8 +204,7 @@ confusions:
 
 The "Named Information Hash" URI scheme allows for minimally self-describing
 hash strings to serve as content-identifiers for arbitrary binary inputs. This
-lightweight identifier scheme is defined in
-[RFC-6920](https://datatracker.ietf.org/doc/html/rfc6920) and the supported
+lightweight identifier scheme is defined in {{?RFC-6920}} and the supported
 hash-context prefixes live in an IANA registry named
 ["https://www.iana.org/assignments/named-information/named-information.xhtml#hash-alg"](https://www.iana.org/assignments/named-information/named-information.xhtml#hash-alg).
 Its syntactic similarity to HTTP headers and [support for MIME
