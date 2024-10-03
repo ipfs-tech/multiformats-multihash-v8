@@ -45,7 +45,7 @@ normative:
 informative:
   RFC6256: SDNV
   RFC8126:
-  DWARF: 
+  DWARF:
     title: DWARF Debugging Information Format
     target: http://dwarfstd.org/doc/Dwarf3.pdf
     date: 2005-12-01
