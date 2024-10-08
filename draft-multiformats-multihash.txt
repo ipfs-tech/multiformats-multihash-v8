@@ -260,6 +260,11 @@ Table of Contents
    constrained by URI scheme, only hinted at by the specification in
    sections 3 through 7.
 
+   One limitation of the NIH system, as a binary format, is that its
+   registry of headers is quite small, without space for tentative,
+   experimental, or vendored entries.  Some additional entries have been
+   added without a binary tag at all, presumably for ASCII-only use.
+
 5.1.1.  Translation from multihash to named-information hash
 
    Some hash functions and output lengths specified in the Multihash
@@ -275,7 +280,8 @@ Table of Contents
    information.xhtml#hash-alg) by Appendix B
    (https://www.ietf.org/archive/id/draft-multiformats-multihash-
    03.html#appendix-D.2) in the 2021 internet-draft (v3) of this same
-   document.
+   document.  This also extends the NIH registry to larger namespace of
+   the more capacious multiformats registry.
 
    The translation is achieved thusly:
 
@@ -550,9 +556,9 @@ C.3.  The 'mh' Named Information Hash Algorithm
 
 Acknowledgments
 
-   Thanks to Carsten Borman, Aaron Goldman, and others for their
-   substantial contributions to this document on the multiformats
-   mailing list.
+   Thanks to Carsten Borman, Benjamin Goering, Aaron Goldman, Dirk
+   Kutscher, and others for their substantial contributions to this
+   document on the multiformats mailing list.
 
 Authors' Addresses
 

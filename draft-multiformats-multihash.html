@@ -1468,6 +1468,10 @@ Its syntactic similarity to HTTP headers and <a href="https://datatracker.ietf.o
 content-types</a> makes
 it potentially useful for web use-cases, but use-cases are not constrained by
 URI scheme, only hinted at by the specification in sections 3 through 7.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-2">One limitation of the NIH system, as a binary format, is that its registry of
+headers is quite small, without space for tentative, experimental, or vendored
+entries. Some additional entries have been added without a binary tag at all,
+presumably for ASCII-only use.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
 <div id="translation-from-multihash-to-named-information-hash">
 <section id="section-5.1.1">
           <h4 id="name-translation-from-multihash-">
@@ -1482,7 +1486,8 @@ Hash (only useful, of course, for consumers supporting both formats) is
 facilitated by a generic cross-registry tag for self-describing multihashes,
 first proposed to the <a href="https://www.iana.org/assignments/named-information/named-information.xhtml#hash-alg">NIH registry</a> by <a href="https://www.ietf.org/archive/id/draft-multiformats-multihash-03.html#appendix-D.2">Appendix
 B</a>
-in the 2021 internet-draft (v3) of this same document.<a href="#section-5.1.1-2" class="pilcrow">¶</a></p>
+in the 2021 internet-draft (v3) of this same document. This also extends the NIH
+registry to larger namespace of the more capacious multiformats registry.<a href="#section-5.1.1-2" class="pilcrow">¶</a></p>
 <p id="section-5.1.1-3">The translation is achieved thusly:<a href="#section-5.1.1-3" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-5.1.1-4">
 <li id="section-5.1.1-4.1">
@@ -1910,8 +1915,9 @@ Status: current
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-D-1">Thanks to Carsten Borman, Aaron Goldman, and others for their substantial
-contributions to this document on the multiformats mailing list.<a href="#appendix-D-1" class="pilcrow">¶</a></p>
+<p id="appendix-D-1">Thanks to Carsten Borman, Benjamin Goering, Aaron Goldman, Dirk Kutscher, and
+others for their substantial contributions to this document on the multiformats
+mailing list.<a href="#appendix-D-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
