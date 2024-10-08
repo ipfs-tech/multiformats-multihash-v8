@@ -88,6 +88,7 @@ Table of Contents
    Appendix A.  Security Considerations
    Appendix B.  IANA Considerations
      B.1.  Initial Values for the Multihash Identifier Registry
+     B.2.  The 'mh' Digest Algorithm
    Acknowledgments
    Authors' Addresses
 
@@ -434,6 +435,42 @@ B.1.  Initial Values for the Multihash Identifier Registry
     +--------------------------+------------+--------+---------------+
 
                                  Table 2
+
+   NOTE: There are many draft and vendor registrations in the historical
+   community registry, which is maintained by the IPFS Foundation on
+   github (https://github.com/multiformats/multicodec/blob/master/
+   table.csv).
+
+B.2.  The 'mh' Digest Algorithm
+
+   This memo registers the "mh" digest-algorithm in the HTTP Digest
+   Algorithm Values (https://www.iana.org/assignments/http-dig-alg/http-
+   dig-alg.xhtml) registry with the following values:
+
+   Digest Algorithm: mh
+
+   Description: The multibase-serialized value of a multihash-supported
+   algorithm.
+
+   References: this document
+
+   Status: standard
+
+   D.3.  The 'mh' Named Information Hash Algorithm
+
+   This memo registers the "mh" hash algorithm in the Named Information
+   Hash Algorithm (https://www.iana.org/assignments/named-information/
+   named-information.xhtml#hash-alg) registry with the following values:
+
+   ID: 49
+
+   Hash Name String: mh
+
+   Value Length: variable
+
+   Reference: this document
+
+   Status: current
 
 Acknowledgments
 
