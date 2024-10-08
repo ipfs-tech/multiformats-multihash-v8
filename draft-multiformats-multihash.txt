@@ -280,8 +280,8 @@ Table of Contents
    information.xhtml#hash-alg) by Appendix B
    (https://www.ietf.org/archive/id/draft-multiformats-multihash-
    03.html#appendix-D.2) in the 2021 internet-draft (v3) of this same
-   document.  This also extends the NIH registry to larger namespace of
-   the more capacious multiformats registry.
+   document.  This also extends the NIH registry to the larger namespace
+   of the multiformats registry.
 
    The translation is achieved thusly:
 
@@ -396,9 +396,7 @@ Appendix A.  Security Considerations
 
 Appendix B.  Test Values
 
-   The multihash examples are chosen to show different hash functions
-   and different hash digest lengths at play.  The input test data for
-   all of the examples in this section is:
+   The input test data for all of the examples in this section is:
 
    Merkle–Damgård
 
@@ -484,44 +482,58 @@ C.1.  Initial Values for the Multihash Identifier Registry
 
    http://www.iana.org/assignments/multihash-identifiers
 
-    +==========================+============+========+===============+
-    | Name                     | Identifier | Status | Specification |
-    +==========================+============+========+===============+
-    | identity                 | 0x00       | active | n/a           |
-    +--------------------------+------------+--------+---------------+
-    | sha1                     | 0x11       | active | [RFC6234]     |
-    +--------------------------+------------+--------+---------------+
-    | sha2-256                 | 0x12       | active | [FIPS202]     |
-    +--------------------------+------------+--------+---------------+
-    | sha2-512                 | 0x13       | active | [FIPS202]     |
-    +--------------------------+------------+--------+---------------+
-    | sha3-512                 | 0x14       | active | [FIPS202]     |
-    +--------------------------+------------+--------+---------------+
-    | sha3-384                 | 0x15       | active | [FIPS202]     |
-    +--------------------------+------------+--------+---------------+
-    | sha3-256                 | 0x16       | active | [FIPS202]     |
-    +--------------------------+------------+--------+---------------+
-    | sha3-224                 | 0x17       | active | [FIPS202]     |
-    +--------------------------+------------+--------+---------------+
-    | sha3-384                 | 0x20       | active | [FIPS202]     |
-    +--------------------------+------------+--------+---------------+
-    | sha2-256-trunc264-padded | 0x1012     | active | [RFC6234]     |
-    +--------------------------+------------+--------+---------------+
-    | sha2-224                 | 0x1013     | active | [RFC6234]     |
-    +--------------------------+------------+--------+---------------+
-    | sha2-512-224             | 0x1014     | active | [RFC6234]     |
-    +--------------------------+------------+--------+---------------+
-    | sha2-512-256             | 0x1015     | active | [RFC6234]     |
-    +--------------------------+------------+--------+---------------+
-    | blake2b-256              | 0xb220     | active | [RFC7693]     |
-    +--------------------------+------------+--------+---------------+
+   +========================+==========+======+==================================+
+   |Name                    |Identifier|Status|Specification                     |
+   +========================+==========+======+==================================+
+   |identity                |0x00      |active|n/a                               |
+   +------------------------+----------+------+----------------------------------+
+   |sha1                    |0x11      |active|[RFC6234]                         |
+   +------------------------+----------+------+----------------------------------+
+   |sha2-256                |0x12      |active|[FIPS202]                         |
+   +------------------------+----------+------+----------------------------------+
+   |sha2-512                |0x13      |active|[FIPS202]                         |
+   +------------------------+----------+------+----------------------------------+
+   |sha3-512                |0x14      |active|[FIPS202]                         |
+   +------------------------+----------+------+----------------------------------+
+   |sha3-384                |0x15      |active|[FIPS202]                         |
+   +------------------------+----------+------+----------------------------------+
+   |sha3-256                |0x16      |active|[FIPS202]                         |
+   +------------------------+----------+------+----------------------------------+
+   |sha3-224                |0x17      |active|[FIPS202]                         |
+   +------------------------+----------+------+----------------------------------+
+   |blake3                  |0x1e      |draft |draft-aumasson-blake3 (internet-  |
+   |                        |          |      |draft)                            |
+   |                        |          |      |(https://datatracker.ietf.org/doc/|
+   |                        |          |      |draft-aumasson-blake3/)           |
+   +------------------------+----------+------+----------------------------------+
+   |sha3-384                |0x20      |active|[FIPS202]                         |
+   +------------------------+----------+------+----------------------------------+
+   |sha2-256-trunc264-padded|0x1012    |active|[RFC6234]                         |
+   +------------------------+----------+------+----------------------------------+
+   |sha2-224                |0x1013    |active|[RFC6234]                         |
+   +------------------------+----------+------+----------------------------------+
+   |sha2-512-224            |0x1014    |active|[RFC6234]                         |
+   +------------------------+----------+------+----------------------------------+
+   |sha2-512-256            |0x1015    |active|[RFC6234]                         |
+   +------------------------+----------+------+----------------------------------+
+   |k12                     |0x1d01    |draft |draft-irtf-cfrg-kangarootwelve-06 |
+   |                        |          |      |(https://datatracker.ietf.org/doc/|
+   |                        |          |      |draft-irtf-cfrg-                  |
+   |                        |          |      |kangarootwelve/06/)               |
+   +------------------------+----------+------+----------------------------------+
+   |blake2b-256             |0xb220    |active|[RFC7693]                         |
+   +------------------------+----------+------+----------------------------------+
+   |blake2b-512             |0xb240    |active|[RFC7693]                         |
+   +------------------------+----------+------+----------------------------------+
+   |blake2s-256             |0xb260    |active|[RFC7693]                         |
+   +------------------------+----------+------+----------------------------------+
 
-                                 Table 2
+                                  Table 2
 
-   NOTE: There are many draft and vendor registrations in the historical
-   community registry, which is maintained by the IPFS Foundation on
-   github (https://github.com/multiformats/multicodec/blob/master/
-   table.csv).
+   NOTE: There are many draft and experimental registrations in the
+   historical community registry, which is maintained by the IPFS
+   Foundation on github
+   (https://github.com/multiformats/multicodec/blob/master/table.csv).
 
 C.2.  The 'mh' Digest Algorithm
 

@@ -1487,7 +1487,7 @@ facilitated by a generic cross-registry tag for self-describing multihashes,
 first proposed to the <a href="https://www.iana.org/assignments/named-information/named-information.xhtml#hash-alg">NIH registry</a> by <a href="https://www.ietf.org/archive/id/draft-multiformats-multihash-03.html#appendix-D.2">Appendix
 B</a>
 in the 2021 internet-draft (v3) of this same document. This also extends the NIH
-registry to larger namespace of the more capacious multiformats registry.<a href="#section-5.1.1-2" class="pilcrow">¶</a></p>
+registry to the larger namespace of the multiformats registry.<a href="#section-5.1.1-2" class="pilcrow">¶</a></p>
 <p id="section-5.1.1-3">The translation is achieved thusly:<a href="#section-5.1.1-3" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="section-5.1.1-4">
 <li id="section-5.1.1-4.1">
@@ -1635,9 +1635,7 @@ variants.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
       <h2 id="name-test-values">
 <a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-test-values" class="section-name selfRef">Test Values</a>
       </h2>
-<p id="appendix-B-1">The multihash examples are chosen to show different hash functions and different
-hash digest lengths at play.  The input test data for all of the examples in
-this section is:<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<p id="appendix-B-1">The input test data for all of the examples in this section is:<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 <div class="lang-bash sourcecode" id="appendix-B-2">
 <pre>
 Merkle–Damgård
@@ -1813,6 +1811,14 @@ maintained at (the suggested URI):<a href="#appendix-C.1-1" class="pilcrow">¶</
 </td>
             </tr>
             <tr>
+              <td class="text-left" rowspan="1" colspan="1">blake3</td>
+              <td class="text-left" rowspan="1" colspan="1">0x1e</td>
+              <td class="text-left" rowspan="1" colspan="1">draft</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="https://datatracker.ietf.org/doc/draft-aumasson-blake3/">draft-aumasson-blake3 (internet-draft)</a>
+</td>
+            </tr>
+            <tr>
               <td class="text-left" rowspan="1" colspan="1">sha3-384</td>
               <td class="text-left" rowspan="1" colspan="1">0x20</td>
               <td class="text-left" rowspan="1" colspan="1">active</td>
@@ -1853,6 +1859,14 @@ maintained at (the suggested URI):<a href="#appendix-C.1-1" class="pilcrow">¶</
 </td>
             </tr>
             <tr>
+              <td class="text-left" rowspan="1" colspan="1">k12</td>
+              <td class="text-left" rowspan="1" colspan="1">0x1d01</td>
+              <td class="text-left" rowspan="1" colspan="1">draft</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="https://datatracker.ietf.org/doc/draft-irtf-cfrg-kangarootwelve/06/">draft-irtf-cfrg-kangarootwelve-06</a>
+</td>
+            </tr>
+            <tr>
               <td class="text-left" rowspan="1" colspan="1">blake2b-256</td>
               <td class="text-left" rowspan="1" colspan="1">0xb220</td>
               <td class="text-left" rowspan="1" colspan="1">active</td>
@@ -1860,9 +1874,27 @@ maintained at (the suggested URI):<a href="#appendix-C.1-1" class="pilcrow">¶</
                 <span>[<a href="#RFC7693" class="cite xref">RFC7693</a>]</span>
 </td>
             </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">blake2b-512</td>
+              <td class="text-left" rowspan="1" colspan="1">0xb240</td>
+              <td class="text-left" rowspan="1" colspan="1">active</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#RFC7693" class="cite xref">RFC7693</a>]</span>
+</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">blake2s-256</td>
+              <td class="text-left" rowspan="1" colspan="1">0xb260</td>
+              <td class="text-left" rowspan="1" colspan="1">active</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#RFC7693" class="cite xref">RFC7693</a>]</span>
+</td>
+            </tr>
           </tbody>
         </table>
-<p id="appendix-C.1-4">NOTE: There are many draft and vendor registrations in the historical community registry, which is maintained by the IPFS Foundation on <a href="https://github.com/multiformats/multicodec/blob/master/table.csv">github</a>.<a href="#appendix-C.1-4" class="pilcrow">¶</a></p>
+<p id="appendix-C.1-4">NOTE: There are many draft and experimental registrations in the historical
+community registry, which is maintained by the IPFS Foundation on
+<a href="https://github.com/multiformats/multicodec/blob/master/table.csv">github</a>.<a href="#appendix-C.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="the-mh-digest-algorithm">
