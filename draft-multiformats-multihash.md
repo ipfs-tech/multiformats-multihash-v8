@@ -291,6 +291,40 @@ http://www.iana.org/assignments/multihash-identifiers
 |sha2-512-256|0x1015|active|{{!RFC6234}}|
 |blake2b-256|0xb220|active|{{!RFC7693}}|
 
+NOTE: There are many draft and vendor registrations in the historical community registry, which is maintained by the IPFS Foundation on [github](https://github.com/multiformats/multicodec/blob/master/table.csv).
+
+## The 'mh' Digest Algorithm
+
+This memo registers the "mh" digest-algorithm in the [HTTP Digest
+Algorithm Values](https://www.iana.org/assignments/http-dig-alg/http-
+dig-alg.xhtml) registry with the following values:
+
+Digest Algorithm: mh
+
+Description: The multibase-serialized value of a multihash-supported
+algorithm.
+
+References: this document
+
+Status: standard
+
+D.3.  The 'mh' Named Information Hash Algorithm
+
+This memo registers the "mh" hash algorithm in the [Named Information
+Hash Algorithm](https://www.iana.org/assignments/named-information/
+named-information.xhtml#hash-alg) registry with the following values:
+
+ID: 49
+
+Hash Name String: mh
+
+Value Length: variable
+
+Reference: this document
+
+Status: current
+
+
 # Acknowledgments
 {:numbered="false"}
 
