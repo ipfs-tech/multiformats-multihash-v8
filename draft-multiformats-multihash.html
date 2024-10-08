@@ -1211,21 +1211,32 @@ translated more easily, decoupled from specific protocols.<a href="#section-abst
             <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#appendix-B" class="auto internal xref">Appendix B</a>.  <a href="#name-test-values" class="internal xref">Test Values</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
-                <p id="section-toc.1-1.8.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-initial-values-for-the-mult" class="internal xref">Initial Values for the Multihash Identifier Registry</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
-                <p id="section-toc.1-1.8.2.2.1"><a href="#appendix-B.2" class="auto internal xref">B.2</a>.  <a href="#name-the-mh-digest-algorithm" class="internal xref">The 'mh' Digest Algorithm</a></p>
+                <p id="section-toc.1-1.8.2.1.1"><a href="#appendix-B.1" class="auto internal xref">B.1</a>.  <a href="#name-sha-1" class="internal xref">SHA-1</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#appendix-C" class="auto internal xref">Appendix C</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
+                <p id="section-toc.1-1.9.2.1.1"><a href="#appendix-C.1" class="auto internal xref">C.1</a>.  <a href="#name-initial-values-for-the-mult" class="internal xref">Initial Values for the Multihash Identifier Registry</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2">
+                <p id="section-toc.1-1.9.2.2.1"><a href="#appendix-C.2" class="auto internal xref">C.2</a>.  <a href="#name-the-mh-digest-algorithm" class="internal xref">The 'mh' Digest Algorithm</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.3">
+                <p id="section-toc.1-1.9.2.3.1"><a href="#appendix-C.3" class="auto internal xref">C.3</a>.  <a href="#name-the-mh-named-information-ha" class="internal xref">The 'mh' Named Information Hash Algorithm</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#appendix-E" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1614,22 +1625,115 @@ variants.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
 <p id="appendix-A-1">TODO Security<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="iana-considerations">
+<div id="test-values">
 <section id="appendix-B">
-      <h2 id="name-iana-considerations">
-<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      <h2 id="name-test-values">
+<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-test-values" class="section-name selfRef">Test Values</a>
       </h2>
-<p id="appendix-B-1">TODO - format <a href="https://github.com/multiformats/multiformats/blob/master/contributing.md#multiformats-registries">current Contributing.md document language</a> to align better with <span>[<a href="#RFC8126" class="cite xref">RFC8126</a>]</span><a href="#appendix-B-1" class="pilcrow">¶</a></p>
-<div id="initial-values-for-the-multihash-identifier-registry">
+<p id="appendix-B-1">The multihash examples are chosen to show different hash functions and different
+hash digest lengths at play.  The input test data for all of the examples in
+this section is:<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<div class="lang-bash sourcecode" id="appendix-B-2">
+<pre>
+Merkle–Damgård
+</pre><a href="#appendix-B-2" class="pilcrow">¶</a>
+</div>
+<div id="sha-1">
 <section id="appendix-B.1">
-        <h3 id="name-initial-values-for-the-mult">
-<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-initial-values-for-the-mult" class="section-name selfRef">Initial Values for the Multihash Identifier Registry</a>
+        <h3 id="name-sha-1">
+<a href="#appendix-B.1" class="section-number selfRef">B.1. </a><a href="#name-sha-1" class="section-name selfRef">SHA-1</a>
         </h3>
-<p id="appendix-B.1-1">The Multihash Identifier Registry contains hash functions supported by Multihash
+<div class="lang-bash sourcecode" id="appendix-B.1-1">
+<pre>
+0x11148a173fd3e32c0fa78b90fe42d305f202244e2739
+</pre><a href="#appendix-B.1-1" class="pilcrow">¶</a>
+</div>
+<p id="appendix-B.1-2">The fields for this multihash are - hashing function: sha1 (0x11),
+length: 20 (0x14), digest: <code>0x8a173fd3e32c0fa78b90fe42d305f202244e2739</code><a href="#appendix-B.1-2" class="pilcrow">¶</a></p>
+<p id="appendix-B.1-3">B.2.  SHA-256<a href="#appendix-B.1-3" class="pilcrow">¶</a></p>
+<div class="lang-bash sourcecode" id="appendix-B.1-4">
+<pre>
+0x122041dd7b6443542e75701aa98a0c235951a28a0d851b11564d20022ab11d2589a8
+</pre><a href="#appendix-B.1-4" class="pilcrow">¶</a>
+</div>
+<p id="appendix-B.1-5">The fields for this multihash are - hashing function: sha2-256
+(0x12), length: 32 (0x20), digest:
+<code>0x41dd7b6443542e75701aa98a0c235951a28a0d851b11564d20022ab11d2589a8</code><a href="#appendix-B.1-5" class="pilcrow">¶</a></p>
+<p id="appendix-B.1-6">B.3.  SHA-512/256<a href="#appendix-B.1-6" class="pilcrow">¶</a></p>
+<div class="lang-bash sourcecode" id="appendix-B.1-7">
+<pre>
+0x132052eb4dd19f1ec522859e12d89706156570f8fbab1824870bc6f8c7d235eef5f4
+</pre><a href="#appendix-B.1-7" class="pilcrow">¶</a>
+</div>
+<p id="appendix-B.1-8">The fields for this multihash are - hashing function: sha2-512
+(0x13), length: 32 (0x20), digest:
+<code>0x52eb4dd19f1ec522859e12d89706156570f8fbab1824870bc6f8c7d235eef5f4</code><a href="#appendix-B.1-8" class="pilcrow">¶</a></p>
+<p id="appendix-B.1-9">B.4.  SHA-512<a href="#appendix-B.1-9" class="pilcrow">¶</a></p>
+<div class="lang-bash sourcecode" id="appendix-B.1-10">
+<pre>
+0x134052eb4dd19f1ec522859e12d89706156570f8fbab1824870bc6f8c7d235eef5f4c2cbbafd365f96fb12b1d98a0334870c2ce90355da25e6a1108a6e17c4aaebb0
+</pre><a href="#appendix-B.1-10" class="pilcrow">¶</a>
+</div>
+<p id="appendix-B.1-11">The fields for this multihash are - hashing function: sha2-512 (0x13), length:
+64 (0x40), digest: <code>0x52eb4dd19f1ec522859e12d897061565
+70f8fbab1824870bc6f8c7d235eef5f4c2cbbafd365f96fb12b1d98a0334870c2ce90
+355da25e6a1108a6e17c4aaebb0</code><a href="#appendix-B.1-11" class="pilcrow">¶</a></p>
+<p id="appendix-B.1-12">B.5.  blake2b512<a href="#appendix-B.1-12" class="pilcrow">¶</a></p>
+<div class="lang-bash sourcecode" id="appendix-B.1-13">
+<pre>
+0xb24040d91ae0cb0e48022053ab0f8f0dc78d28593d0f1c13ae39c9b169c136a779f21a0496337b6f776a73c1742805c1cc15e792ddb3c92ee1fe300389456ef3dc97e2
+</pre><a href="#appendix-B.1-13" class="pilcrow">¶</a>
+</div>
+<p id="appendix-B.1-14">The fields for this multihash are - hashing function: blake2b-512 (0xb240),
+length: 64 (0x40), digest: <code>0xd91ae0cb0e48022053ab0f8f0dc78d
+28593d0f1c13ae39c9b169c136a779f21a0496337b6f776a73c1742805c1cc15e792d
+db3c92ee1fe300389456ef3dc97e2</code><a href="#appendix-B.1-14" class="pilcrow">¶</a></p>
+<p id="appendix-B.1-15">B.6.  blake2b256<a href="#appendix-B.1-15" class="pilcrow">¶</a></p>
+<div class="lang-bash sourcecode" id="appendix-B.1-16">
+<pre>
+0xb220207d0a1371550f3306532ff44520b649f8be05b72674e46fc24468ff74323ab030
+</pre><a href="#appendix-B.1-16" class="pilcrow">¶</a>
+</div>
+<p id="appendix-B.1-17">The fields for this multihash are - hashing function: blake2b-256 (0xb220),
+length: 32 (0x20), digest:
+<code>0x7d0a1371550f3306532ff44520b649f8be05b72674e46fc24468ff74323ab030</code><a href="#appendix-B.1-17" class="pilcrow">¶</a></p>
+<p id="appendix-B.1-18">B.7.  blake2s256<a href="#appendix-B.1-18" class="pilcrow">¶</a></p>
+<div class="lang-bash sourcecode" id="appendix-B.1-19">
+<pre>
+0xb26020a96953281f3fd944a3206219fad61a40b992611b7580f1fa091935db3f7ca13d
+</pre><a href="#appendix-B.1-19" class="pilcrow">¶</a>
+</div>
+<p id="appendix-B.1-20">The fields for this multihash are - hashing function: blake2s-256 (0xb260),
+length: 32 (0x20), digest:
+<code>0xa96953281f3fd944a3206219fad61a40b992611b7580f1fa091935db3f7ca13d</code><a href="#appendix-B.1-20" class="pilcrow">¶</a></p>
+<p id="appendix-B.1-21">B.8.  blake2s128<a href="#appendix-B.1-21" class="pilcrow">¶</a></p>
+<div class="lang-bash sourcecode" id="appendix-B.1-22">
+<pre>
+0xb250100a4ec6f1629e49262d7093e2f82a3278
+</pre><a href="#appendix-B.1-22" class="pilcrow">¶</a>
+</div>
+<p id="appendix-B.1-23">The fields for this multihash are - hashing function: blake2s-128 (0xb250),
+length: 16 (0x10), digest: <code>0x0a4ec6f1629e49262d7093e2f82a3278</code><a href="#appendix-B.1-23" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="iana-considerations">
+<section id="appendix-C">
+      <h2 id="name-iana-considerations">
+<a href="#appendix-C" class="section-number selfRef">Appendix C. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="appendix-C-1">TODO - format <a href="https://github.com/multiformats/multiformats/blob/master/contributing.md#multiformats-registries">current Contributing.md document language</a> to align better with <span>[<a href="#RFC8126" class="cite xref">RFC8126</a>]</span><a href="#appendix-C-1" class="pilcrow">¶</a></p>
+<div id="initial-values-for-the-multihash-identifier-registry">
+<section id="appendix-C.1">
+        <h3 id="name-initial-values-for-the-mult">
+<a href="#appendix-C.1" class="section-number selfRef">C.1. </a><a href="#name-initial-values-for-the-mult" class="section-name selfRef">Initial Values for the Multihash Identifier Registry</a>
+        </h3>
+<p id="appendix-C.1-1">The Multihash Identifier Registry contains hash functions supported by Multihash
 each with its canonical name, its value in hexadecimal notation, and its status.
 The following initial entries should be added to the registry to be created and
-maintained at (the suggested URI):<a href="#appendix-B.1-1" class="pilcrow">¶</a></p>
-<p id="appendix-B.1-2">http://www.iana.org/assignments/multihash-identifiers<a href="#appendix-B.1-2" class="pilcrow">¶</a></p>
+maintained at (the suggested URI):<a href="#appendix-C.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-C.1-2">http://www.iana.org/assignments/multihash-identifiers<a href="#appendix-C.1-2" class="pilcrow">¶</a></p>
 <table class="center" id="table-2">
           <caption><a href="#table-2" class="selfRef">Table 2</a></caption>
 <thead>
@@ -1753,44 +1857,65 @@ maintained at (the suggested URI):<a href="#appendix-B.1-1" class="pilcrow">¶</
             </tr>
           </tbody>
         </table>
-<p id="appendix-B.1-4">NOTE: There are many draft and vendor registrations in the historical community registry, which is maintained by the IPFS Foundation on <a href="https://github.com/multiformats/multicodec/blob/master/table.csv">github</a>.<a href="#appendix-B.1-4" class="pilcrow">¶</a></p>
+<p id="appendix-C.1-4">NOTE: There are many draft and vendor registrations in the historical community registry, which is maintained by the IPFS Foundation on <a href="https://github.com/multiformats/multicodec/blob/master/table.csv">github</a>.<a href="#appendix-C.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="the-mh-digest-algorithm">
-<section id="appendix-B.2">
+<section id="appendix-C.2">
         <h3 id="name-the-mh-digest-algorithm">
-<a href="#appendix-B.2" class="section-number selfRef">B.2. </a><a href="#name-the-mh-digest-algorithm" class="section-name selfRef">The 'mh' Digest Algorithm</a>
+<a href="#appendix-C.2" class="section-number selfRef">C.2. </a><a href="#name-the-mh-digest-algorithm" class="section-name selfRef">The 'mh' Digest Algorithm</a>
         </h3>
-<p id="appendix-B.2-1">This memo registers the "mh" digest-algorithm in the <a href="https://www.iana.org/assignments/http-dig-alg/http-%20dig-alg.xhtml">HTTP Digest
-Algorithm Values</a> registry with the following values:<a href="#appendix-B.2-1" class="pilcrow">¶</a></p>
-<p id="appendix-B.2-2">Digest Algorithm: mh<a href="#appendix-B.2-2" class="pilcrow">¶</a></p>
-<p id="appendix-B.2-3">Description: The multibase-serialized value of a multihash-supported
-algorithm.<a href="#appendix-B.2-3" class="pilcrow">¶</a></p>
-<p id="appendix-B.2-4">References: this document<a href="#appendix-B.2-4" class="pilcrow">¶</a></p>
-<p id="appendix-B.2-5">Status: standard<a href="#appendix-B.2-5" class="pilcrow">¶</a></p>
-<p id="appendix-B.2-6">D.3.  The 'mh' Named Information Hash Algorithm<a href="#appendix-B.2-6" class="pilcrow">¶</a></p>
-<p id="appendix-B.2-7">This memo registers the "mh" hash algorithm in the <a href="https://www.iana.org/assignments/named-information/%20named-information.xhtml#hash-alg">Named Information
-Hash Algorithm</a> registry with the following values:<a href="#appendix-B.2-7" class="pilcrow">¶</a></p>
-<p id="appendix-B.2-8">ID: 49<a href="#appendix-B.2-8" class="pilcrow">¶</a></p>
-<p id="appendix-B.2-9">Hash Name String: mh<a href="#appendix-B.2-9" class="pilcrow">¶</a></p>
-<p id="appendix-B.2-10">Value Length: variable<a href="#appendix-B.2-10" class="pilcrow">¶</a></p>
-<p id="appendix-B.2-11">Reference: this document<a href="#appendix-B.2-11" class="pilcrow">¶</a></p>
-<p id="appendix-B.2-12">Status: current<a href="#appendix-B.2-12" class="pilcrow">¶</a></p>
+<p id="appendix-C.2-1">This memo registers the "mh" digest-algorithm in the <a href="https://www.iana.org/assignments/http-dig-alg/http-%20dig-alg.xhtml">HTTP Digest
+Algorithm Values</a> registry with the following values:<a href="#appendix-C.2-1" class="pilcrow">¶</a></p>
+<div class="lang-bash sourcecode" id="appendix-C.2-2">
+<pre>
+Digest Algorithm: mh
+
+Description: The multibase-serialized value of a multihash-supported
+algorithm.
+
+References: this document
+
+Status: standard
+</pre><a href="#appendix-C.2-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="the-mh-named-information-hash-algorithm">
+<section id="appendix-C.3">
+        <h3 id="name-the-mh-named-information-ha">
+<a href="#appendix-C.3" class="section-number selfRef">C.3. </a><a href="#name-the-mh-named-information-ha" class="section-name selfRef">The 'mh' Named Information Hash Algorithm</a>
+        </h3>
+<p id="appendix-C.3-1">This memo registers the "mh" hash algorithm in the <a href="https://www.iana.org/assignments/named-information/%20named-information.xhtml#hash-alg">Named Information
+Hash Algorithm</a> registry with the following values:<a href="#appendix-C.3-1" class="pilcrow">¶</a></p>
+<div class="lang-bash sourcecode" id="appendix-C.3-2">
+<pre>
+ID: 49
+
+Hash Name String: mh
+
+Value Length: variable
+
+Reference: this document
+
+Status: current
+</pre><a href="#appendix-C.3-2" class="pilcrow">¶</a>
+</div>
 </section>
 </div>
 </section>
 </div>
 <div id="acknowledgments">
-<section id="appendix-C">
+<section id="appendix-D">
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-C-1">Thanks to Carsten Borman, Aaron Goldman, and others for their substantial
-contributions to this document on the multiformats mailing list.<a href="#appendix-C-1" class="pilcrow">¶</a></p>
+<p id="appendix-D-1">Thanks to Carsten Borman, Aaron Goldman, and others for their substantial
+contributions to this document on the multiformats mailing list.<a href="#appendix-D-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
-<section id="appendix-D">
+<section id="appendix-E">
       <h2 id="name-authors-addresses">
 <a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
