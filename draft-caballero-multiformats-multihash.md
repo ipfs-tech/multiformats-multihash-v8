@@ -9,16 +9,16 @@ number:
 date:
 consensus: true
 v: 3
-area: ART
-workgroup: Multiformats (proposed)
+# area: ART
+# workgroup: Multiformats (proposed)
 keyword:
  - namespace governance
  - identifiers
  - sparkling distributed ledger
 pi: [toc, tocindent, sort refs, symrefs, strict, compact, inline]
 venue:
-  type: Working Group
-  github: ipfs-tech/multiformats-multihash-v8
+#  type: Working Group
+  github: "ipfs-tech/multiformats-multihash-v8"
 author:
   - fullname: Juan Benet
     organization: Protocol Labs
