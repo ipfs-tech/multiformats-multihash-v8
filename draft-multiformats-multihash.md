@@ -217,7 +217,7 @@ facilitated by a generic cross-registry tag for self-describing multihashes,
 first proposed to the [NIH registry][] by [Appendix
 B](https://www.ietf.org/archive/id/draft-multiformats-multihash-03.html#appendix-D.2)
 in the 2021 internet-draft (v3) of this same document. This also extends the NIH
-registry to larger namespace of the more capacious multiformats registry.
+registry to the larger namespace of the multiformats registry.
 
 The translation is achieved thusly:
 
@@ -269,9 +269,7 @@ TODO Security
 
 # Test Values
 
-The multihash examples are chosen to show different hash functions and different
-hash digest lengths at play.  The input test data for all of the examples in
-this section is:
+The input test data for all of the examples in this section is:
 
 ~~~~ bash
 Merkle–Damgård
@@ -380,14 +378,20 @@ http://www.iana.org/assignments/multihash-identifiers
 |sha3-384|0x15|active| [FIPS202] |
 |sha3-256|0x16|active| [FIPS202] |
 |sha3-224|0x17|active| [FIPS202] |
+|blake3|0x1e|draft|[draft-aumasson-blake3 (internet-draft)](https://datatracker.ietf.org/doc/draft-aumasson-blake3/)|
 |sha3-384|0x20|active| [FIPS202] |
 |sha2-256-trunc264-padded|0x1012|active|{{!RFC6234}}|
 |sha2-224|0x1013|active|{{!RFC6234}}|
 |sha2-512-224|0x1014|active|{{!RFC6234}}|
 |sha2-512-256|0x1015|active|{{!RFC6234}}|
+|k12|0x1d01|draft|[draft-irtf-cfrg-kangarootwelve-06](https://datatracker.ietf.org/doc/draft-irtf-cfrg-kangarootwelve/06/)|
 |blake2b-256|0xb220|active|{{!RFC7693}}|
+|blake2b-512|0xb240|active|{{!RFC7693}}|
+|blake2s-256|0xb260|active|{{!RFC7693}}|
 
-NOTE: There are many draft and vendor registrations in the historical community registry, which is maintained by the IPFS Foundation on [github](https://github.com/multiformats/multicodec/blob/master/table.csv).
+NOTE: There are many draft and experimental registrations in the historical
+community registry, which is maintained by the IPFS Foundation on
+[github](https://github.com/multiformats/multicodec/blob/master/table.csv).
 
 ## The 'mh' Digest Algorithm
 
