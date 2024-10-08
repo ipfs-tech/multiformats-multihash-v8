@@ -199,6 +199,11 @@ content-types](https://datatracker.ietf.org/doc/html/rfc6920#section-3.1) makes
 it potentially useful for web use-cases, but use-cases are not constrained by
 URI scheme, only hinted at by the specification in sections 3 through 7.
 
+One limitation of the NIH system, as a binary format, is that its registry of
+headers is quite small, without space for tentative, experimental, or vendored
+entries. Some additional entries have been added without a binary tag at all,
+presumably for ASCII-only use.
+
 ### Translation from multihash to named-information hash
 
 Some hash functions and output lengths specified in the Multihash registry below
@@ -211,7 +216,8 @@ Hash (only useful, of course, for consumers supporting both formats) is
 facilitated by a generic cross-registry tag for self-describing multihashes,
 first proposed to the [NIH registry][] by [Appendix
 B](https://www.ietf.org/archive/id/draft-multiformats-multihash-03.html#appendix-D.2)
-in the 2021 internet-draft (v3) of this same document.
+in the 2021 internet-draft (v3) of this same document. This also extends the NIH
+registry to larger namespace of the more capacious multiformats registry.
 
 The translation is achieved thusly:
 
@@ -421,5 +427,6 @@ Status: current
 # Acknowledgments
 {:numbered="false"}
 
-Thanks to Carsten Borman, Aaron Goldman, and others for their substantial
-contributions to this document on the multiformats mailing list.
+Thanks to Carsten Borman, Benjamin Goering, Aaron Goldman, Dirk Kutscher, and
+others for their substantial contributions to this document on the multiformats
+mailing list.
