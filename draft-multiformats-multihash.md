@@ -269,7 +269,7 @@ this section is:
 
 ~~~~ bash
 Merkle–Damgård
-~~~~ 
+~~~~
 
 ## SHA-1
 
@@ -389,6 +389,7 @@ This memo registers the "mh" digest-algorithm in the [HTTP Digest
 Algorithm Values](https://www.iana.org/assignments/http-dig-alg/http-
 dig-alg.xhtml) registry with the following values:
 
+~~~~ bash
 Digest Algorithm: mh
 
 Description: The multibase-serialized value of a multihash-supported
@@ -397,13 +398,15 @@ algorithm.
 References: this document
 
 Status: standard
+~~~~
 
-D.3.  The 'mh' Named Information Hash Algorithm
+## The 'mh' Named Information Hash Algorithm
 
 This memo registers the "mh" hash algorithm in the [Named Information
 Hash Algorithm](https://www.iana.org/assignments/named-information/
 named-information.xhtml#hash-alg) registry with the following values:
 
+~~~~ bash
 ID: 49
 
 Hash Name String: mh
@@ -413,7 +416,7 @@ Value Length: variable
 Reference: this document
 
 Status: current
-
+~~~~
 
 # Acknowledgments
 {:numbered="false"}
